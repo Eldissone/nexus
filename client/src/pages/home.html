@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscar Serviços - HealthConnect</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    
+    <!-- Tailwind Configuration -->
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13ec5b",
+                        "primary-dark": "#11d852",
+                        "background-light": "#f6f8f6",
+                        "background-dark": "#102216",
+                        "surface-dark": "#1A2E22",
+                        "surface-light": "#ffffff",
+                        "text-dark": "#1a2e22",
+                        "text-light": "#f6f8f6"
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.75rem",
+                        "lg": "1rem",
+                        "xl": "1.25rem",
+                        "2xl": "1.5rem"
+                    }
+                },
+            },
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Lexend', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #13ec5b 0%, #0bc44a 100%);
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(19, 236, 91, 0.3);
+            border-radius: 10px;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(19, 236, 91, 0.5);
+        }
+        
+        .filter-chip {
+            transition: all 0.2s ease;
+        }
+        
+        .filter-chip.active {
+            background: linear-gradient(135deg, #13ec5b 0%, #0bc44a 100%);
+            color: white;
+            border-color: transparent;
+        }
+        
+        .service-card {
+            transition: all 0.3s ease;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-text-dark dark:text-text-light font-display">
+    <!-- Navigation Header -->
+    <header class="sticky top-0 z-50 bg-white dark:bg-surface-dark border-b border-gray-100 dark:border-white/5">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <!-- Logo and Back Button -->
+                <div class="flex items-center gap-3">
+                    <a href="index.html" class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">
+                        <span class="material-symbols-outlined">arrow_back</span>
+                    </a>
+                    <a href="index.html" class="flex items-center gap-2">
+                        <div class="bg-primary/10 p-2 rounded-lg">
+                            <span class="material-symbols-outlined text-primary text-xl">local_hospital</span>
+                        </div>
+                        <span class="text-lg font-bold text-text-dark dark:text-white">HealthConnect</span>
+                    </a>
+                </div>
+                
+                <!-- User Menu -->
+                <div class="flex items-center gap-4">
+                    <button class="relative p-2 text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">
+                        <span class="material-symbols-outlined">notifications</span>
+                        <span class="absolute top-1 right-1 h-2 w-2 bg-red-500 rounded-full"></span>
+                    </button>
+                    <a href="profile.html" class="p-2 text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">
+                        <span class="material-symbols-outlined">person</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Search Page Content -->
+    <div class="container mx-auto px-4 py-6 max-w-7xl">
+        <!-- Page Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-text-dark dark:text-white mb-2">
+                Encontrar Serviços de Saúde
+            </h1>
+            <p class="text-gray-600 dark:text-gray-300">
+                Encontre profissionais qualificados perto de você
+            </p>
+        </div>
+        
+        <!-- Search and Filters Section -->
+        <div class="mb-8">
+            <!-- Main Search Bar -->
+            <div class="relative mb-4">
+                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <span class="material-symbols-outlined text-gray-400">search</span>
+                </div>
+                <input 
+                    type="text" 
+                    id="searchInput"
+                    placeholder="Buscar por especialidade, serviço, sintoma..."
+                    class="w-full pl-12 pr-4 py-4 bg-white dark:bg-surface-dark border border-gray-200 dark:border-white/10 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+                >
+                <button 
+                    onclick="performSearch()"
+                    class="absolute inset-y-0 right-0 pr-4 flex items-center text-primary hover:text-primary-dark transition-colors"
+                >
+                    <span class="material-symbols-outlined">arrow_forward</span>
+                </button>
+            </div>
+            
+            <!-- Quick Filters -->
+            <div class="flex flex-wrap gap-2 mb-4">
+                <button class="filter-chip px-4 py-2 bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-full text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-white/10 transition-colors">
+                    Cardiologia
+                </button>
+                <button class="filter-chip px-4 py-2 bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-full text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-white/10 transition-colors">
+                    Consulta Online
+                </button>
+                <button class="filter-chip px-4 py-2 bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-full text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-white/10 transition-colors">
+                    Urgência
+                </button>
+                <button class="filter-chip px-4 py-2 bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-full text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-white/10 transition-colors">
+                    Home Care
+                </button>
+            </div>
+            
+            <!-- Advanced Filter Controls -->
+            <div class="bg-white dark:bg-surface-dark rounded-xl p-4 border border-gray-100 dark:border-white/5">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Category Filter -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Categoria
+                        </label>
+                        <select 
+                            id="categoryFilter"
+                            class="w-full px-3 py-2.5 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+                        >
+                            <option value="">Todas as Categorias</option>
+                            <option value="consultation">Consultas Médicas</option>
+                            <option value="homeCare">Atendimento Domiciliar</option>
+                            <option value="nursing">Enfermagem</option>
+                            <option value="physiotherapy">Fisioterapia</option>
+                            <option value="laboratory">Exames Laboratoriais</option>
+                            <option value="psychology">Psicologia</option>
+                            <option value="nutrition">Nutrição</option>
+                            <option value="dentistry">Odontologia</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Price Filter -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Faixa de Preço
+                        </label>
+                        <select 
+                            id="priceFilter"
+                            class="w-full px-3 py-2.5 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+                        >
+                            <option value="">Qualquer Preço</option>
+                            <option value="0-50">Até R$ 50</option>
+                            <option value="50-100">R$ 50 - R$ 100</option>
+                            <option value="100-200">R$ 100 - R$ 200</option>
+                            <option value="200-500">R$ 200 - R$ 500</option>
+                            <option value="500+">Acima de R$ 500</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Rating Filter -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Avaliação Mínima
+                        </label>
+                        <select 
+                            id="ratingFilter"
+                            class="w-full px-3 py-2.5 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+                        >
+                            <option value="">Qualquer Avaliação</option>
+                            <option value="4.5">4.5+ estrelas</option>
+                            <option value="4.0">4.0+ estrelas</option>
+                            <option value="3.5">3.5+ estrelas</option>
+                            <option value="3.0">3.0+ estrelas</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Clear Filters Button -->
+                <div class="mt-4 flex justify-end">
+                    <button 
+                        onclick="clearFilters()"
+                        class="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors flex items-center gap-2"
+                    >
+                        <span class="material-symbols-outlined text-sm">filter_alt_off</span>
+                        Limpar Filtros
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content Area -->
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Sidebar Filters -->
+            <div class="lg:w-1/4">
+                <div class="bg-white dark:bg-surface-dark rounded-xl p-6 border border-gray-100 dark:border-white/5 sticky top-24">
+                    <h3 class="text-lg font-bold text-text-dark dark:text-white mb-6">
+                        Filtros Avançados
+                    </h3>
+                    
+                    <!-- Availability Filters -->
+                    <div class="mb-8">
+                        <h4 class="font-medium text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-sm">schedule</span>
+                            Disponibilidade
+                        </h4>
+                        <div class="space-y-2">
+                            <label class="flex items-center">
+                                <input 
+                                    type="checkbox" 
+                                    name="availability" 
+                                    value="today"
+                                    class="h-4 w-4 text-primary focus:ring-primary border-gray-300 dark:border-gray-600 rounded"
+                                >
+                                <span class="ml-2 text-sm text-gray-600 dark:text-gray-300">Hoje</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input 
+                                    type="checkbox" 
+                                    name="availability" 
+                                    value="tomorrow"
+                                    class="h-4 w-4 text-primary focus:ring-primary border-gray-300 dark:border-gray-600 rounded"
+                                >
+                                <span class="ml-2 text-sm text-gray-600 dark:text-gray-300">Amanhã</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input 
+                                    type="checkbox" 
+                                    name="availability" 
+                                    value="weekend"
+                                    class="h-4 w-4 text-primary focus:ring-primary border-gray-300 dark:border-gray-600 rounded"
+                                >
+                                <span class="ml-2 text-sm text-gray-600 dark:text-gray-300">Fim de Semana</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input 
+                                    type="checkbox" 
+                                    name="availability" 
+                                    value="urgent"
+                                    class="h-4 w-4 text-primary focus:ring-primary border-gray-300 dark:border-gray-600 rounded"
+                                >
+                                <span class="ml-2 text-sm text-gray-600 dark:text-gray-300">Urgência (24h)</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Service Type Filters -->
+                    <div class="mb-8">
+                        <h4 class="font-medium text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-sm">medical_services</span>
+                            Tipo de Atendimento
+                        </h4>
+                        <div class="space-y-2">
+                            <label class="flex items-center">
+                                <input 
+                                    type="checkbox" 
+                                    name="serviceType" 
+                                    value="home"
+                                    class="h-4 w-4 text-primary focus:ring-primary border-gray-300 dark:border-gray-600 rounded"
+                                >
+                                <span class="ml-2 text-sm text-gray-600 dark:text-gray-300">Domiciliar</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input 
+                                    type="checkbox" 
+                                    name="serviceType" 
+                                    value="clinic"
+                                    class="h-4 w-4 text-primary focus:ring-primary border-gray-300 dark:border-gray-600 rounded"
+                                >
+                                <span class="ml-2 text-sm text-gray-600 dark:text-gray-300">Clínica</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input 
+                                    type="checkbox" 
+                                    name="serviceType" 
+                                    value="online"
+                                    class="h-4 w-4 text-primary focus:ring-primary border-gray-300 dark:border-gray-600 rounded"
+                                >
+                                <span class="ml-2 text-sm text-gray-600 dark:text-gray-300">Online</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Distance Filter -->
+                    <div>
+                        <h4 class="font-medium text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-sm">location_on</span>
+                            Distância Máxima
+                        </h4>
+                        <div class="space-y-2">
+                            <label class="flex items-center">
+                                <input 
+                                    type="radio" 
+                                    name="distance" 
+                                    value="5"
+                                    class="h-4 w-4 text-primary focus:ring-primary border-gray-300 dark:border-gray-600"
+                                >
+                                <span class="ml-2 text-sm text-gray-600 dark:text-gray-300">Até 5 km</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input 
+                                    type="radio" 
+                                    name="distance" 
+                                    value="10"
+                                    class="h-4 w-4 text-primary focus:ring-primary border-gray-300 dark:border-gray-600"
+                                >
+                                <span class="ml-2 text-sm text-gray-600 dark:text-gray-300">Até 10 km</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input 
+                                    type="radio" 
+                                    name="distance" 
+                                    value="25"
+                                    class="h-4 w-4 text-primary focus:ring-primary border-gray-300 dark:border-gray-600"
+                                >
+                                <span class="ml-2 text-sm text-gray-600 dark:text-gray-300">Até 25 km</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input 
+                                    type="radio" 
+                                    name="distance" 
+                                    value="any"
+                                    checked
+                                    class="h-4 w-4 text-primary focus:ring-primary border-gray-300 dark:border-gray-600"
+                                >
+                                <span class="ml-2 text-sm text-gray-600 dark:text-gray-300">Qualquer distância</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Results Area -->
+            <div class="lg:w-3/4">
+                <!-- Results Header -->
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
+                    <div>
+                        <h2 class="text-xl font-bold text-text-dark dark:text-white mb-1">
+                            Resultados da Busca
+                        </h2>
+                        <span id="resultsCount" class="text-sm text-gray-600 dark:text-gray-300">
+                            Carregando...
+                        </span>
+                    </div>
+                    
+                    <!-- Sort Options -->
+                    <div class="mt-4 sm:mt-0">
+                        <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mr-2">
+                            Ordenar por:
+                        </label>
+                        <select 
+                            id="sortBy"
+                            onchange="sortResults()"
+                            class="px-3 py-2 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+                        >
+                            <option value="rating">Melhor Avaliados</option>
+                            <option value="price_low">Menor Preço</option>
+                            <option value="price_high">Maior Preço</option>
+                            <option value="name">Nome (A-Z)</option>
+                            <option value="distance">Mais Próximo</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Services Grid -->
+                <div id="servicesList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Results will be loaded here -->
+                </div>
+                
+                <!-- Loading State -->
+                <div id="loadingState" class="text-center py-12">
+                    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+                    <p class="text-gray-600 dark:text-gray-300">Carregando serviços...</p>
+                </div>
+                
+                <!-- Empty State -->
+                <div id="emptyState" class="hidden text-center py-12">
+                    <div class="text-gray-400 mb-4">
+                        <span class="material-symbols-outlined text-6xl">search_off</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2">
+                        Nenhum serviço encontrado
+                    </h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">
+                        Tente ajustar seus filtros ou busca
+                    </p>
+                    <button 
+                        onclick="clearFilters()"
+                        class="px-6 py-3 bg-primary hover:bg-primary-dark text-background-dark font-semibold rounded-xl transition-all active:scale-95"
+                    >
+                        Limpar Filtros
+                    </button>
+                </div>
+                
+                <!-- Pagination -->
+                <div id="pagination" class="mt-12 flex justify-center">
+                    <!-- Pagination will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="fixed bottom-0 left-0 right-0 z-40 bg-white dark:bg-surface-dark border-t border-gray-100 dark:border-white/5 py-3">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-around items-center">
+                <a href="index.html" class="flex flex-col items-center text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined text-2xl">home</span>
+                    <span class="text-xs mt-1">Início</span>
+                </a>
+                
+                <a href="search.html" class="flex flex-col items-center text-primary">
+                    <span class="material-symbols-outlined text-2xl">search</span>
+                    <span class="text-xs mt-1">Buscar</span>
+                </a>
+                
+                <a href="appointments.html" class="flex flex-col items-center text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined text-2xl">calendar_month</span>
+                    <span class="text-xs mt-1">Agendamentos</span>
+                </a>
+                
+                <a href="chat.html" class="flex flex-col items-center text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors relative">
+                    <span class="material-symbols-outlined text-2xl">chat_bubble</span>
+                    <span class="absolute -top-1 -right-1 h-2 w-2 bg-red-500 rounded-full"></span>
+                    <span class="text-xs mt-1">Chat</span>
+                </a>
+                
+                <a href="profile.html" class="flex flex-col items-center text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined text-2xl">person</span>
+                    <span class="text-xs mt-1">Perfil</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- JavaScript -->
+    <script type="module">
+        // Mock data for services
+        const mockServices = [
+            {
+                id: 1,
+                name: "Dr. Ana Silva",
+                specialty: "Cardiologista",
+                description: "Especialista em saúde cardiovascular preventiva. Atendimento presencial e online.",
+                rating: 4.9,
+                reviewCount: 128,
+                price: 250,
+                distance: "2.5 km",
+                availability: ["today", "tomorrow"],
+                serviceType: ["clinic", "online"],
+                category: "consultation",
+                verified: true,
+                image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=200&h=200&fit=crop&crop=face"
+            },
+            {
+                id: 2,
+                name: "Roberto Mendes",
+                specialty: "Fisioterapeuta",
+                description: "Reabilitação esportiva e pós-cirúrgica. Atendimento domiciliar disponível.",
+                rating: 4.7,
+                reviewCount: 45,
+                price: 120,
+                distance: "1.2 km",
+                availability: ["today", "weekend"],
+                serviceType: ["home"],
+                category: "physiotherapy",
+                verified: false,
+                image: "https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=200&h=200&fit=crop&crop=face"
+            },
+            {
+                id: 3,
+                name: "Carla Souza",
+                specialty: "Cuidadora",
+                description: "Experiência com idosos e portadores de necessidades especiais. Paciente e atenciosa.",
+                rating: 5.0,
+                reviewCount: 82,
+                price: 45,
+                distance: "4.0 km",
+                availability: ["today", "tomorrow", "weekend"],
+                serviceType: ["home"],
+                category: "homeCare",
+                verified: true,
+                image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop&crop=face"
+            },
+            {
+                id: 4,
+                name: "Dra. Mariana Costa",
+                specialty: "Psicóloga",
+                description: "Terapia cognitivo-comportamental. Atendimento online disponível.",
+                rating: 4.8,
+                reviewCount: 76,
+                price: 180,
+                distance: "3.8 km",
+                availability: ["tomorrow", "weekend"],
+                serviceType: ["clinic", "online"],
+                category: "psychology",
+                verified: true,
+                image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=200&h=200&fit=crop&crop=face"
+            },
+            {
+                id: 5,
+                name: "Dr. Carlos Santos",
+                specialty: "Clínico Geral",
+                description: "Consultas gerais e exames de rotina. Atendimento 24h para urgências.",
+                rating: 4.6,
+                reviewCount: 93,
+                price: 150,
+                distance: "0.8 km",
+                availability: ["today", "tomorrow", "weekend", "urgent"],
+                serviceType: ["clinic", "home"],
+                category: "consultation",
+                verified: true,
+                image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=200&h=200&fit=crop&crop=face"
+            },
+            {
+                id: 6,
+                name: "Enf. João Oliveira",
+                specialty: "Enfermeiro",
+                description: "Aplicação de medicamentos, curativos e cuidados especiais.",
+                rating: 4.9,
+                reviewCount: 67,
+                price: 80,
+                distance: "2.1 km",
+                availability: ["today", "tomorrow"],
+                serviceType: ["home"],
+                category: "nursing",
+                verified: true,
+                image: "https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=200&h=200&fit=crop&crop=face"
+            },
+            {
+                id: 7,
+                name: "Lab. Saúde Total",
+                specialty: "Exames Laboratoriais",
+                description: "Coleta domiciliar para exames de sangue, urina e outros.",
+                rating: 4.7,
+                reviewCount: 154,
+                price: 299,
+                distance: "5.2 km",
+                availability: ["today", "tomorrow", "weekend"],
+                serviceType: ["home"],
+                category: "laboratory",
+                verified: true,
+                image: "https://images.unsplash.com/photo-1551601651-2a8555f1a136?w=200&h=200&fit=crop"
+            },
+            {
+                id: 8,
+                name: "Dr. Pedro Almeida",
+                specialty: "Nutricionista",
+                description: "Planejamento alimentar personalizado para diferentes objetivos.",
+                rating: 4.8,
+                reviewCount: 58,
+                price: 200,
+                distance: "6.3 km",
+                availability: ["tomorrow", "weekend"],
+                serviceType: ["online"],
+                category: "nutrition",
+                verified: false,
+                image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=200&h=200&fit=crop&crop=face"
+            }
+        ];
+        
+        let currentServices = [...mockServices];
+        let currentPage = 1;
+        const servicesPerPage = 6;
+        
+        // DOM Elements
+        const servicesList = document.getElementById('servicesList');
+        const resultsCount = document.getElementById('resultsCount');
+        const loadingState = document.getElementById('loadingState');
+        const emptyState = document.getElementById('emptyState');
+        const pagination = document.getElementById('pagination');
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadServices();
+            setupEventListeners();
+        });
+        
+        function setupEventListeners() {
+            // Search input with debounce
+            const searchInput = document.getElementById('searchInput');
+            let searchTimeout;
+            
+            searchInput.addEventListener('input', (e) => {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    performSearch();
+                }, 500);
+            });
+            
+            // Filter changes
+            document.getElementById('categoryFilter').addEventListener('change', performSearch);
+            document.getElementById('priceFilter').addEventListener('change', performSearch);
+            document.getElementById('ratingFilter').addEventListener('change', performSearch);
+            
+            // Checkbox filters
+            document.querySelectorAll('input[type="checkbox"], input[type="radio"]').forEach(input => {
+                input.addEventListener('change', performSearch);
+            });
+            
+            // Quick filter chips
+            document.querySelectorAll('.filter-chip').forEach(chip => {
+                chip.addEventListener('click', function() {
+                    this.classList.toggle('active');
+                    performSearch();
+                });
+            });
+        }
+        
+        function performSearch() {
+            loadingState.classList.remove('hidden');
+            servicesList.innerHTML = '';
+            
+            // Simulate API delay
+            setTimeout(() => {
+                let filteredServices = [...mockServices];
+                
+                // Get filter values
+                const searchQuery = document.getElementById('searchInput').value.toLowerCase();
+                const category = document.getElementById('categoryFilter').value;
+                const priceRange = document.getElementById('priceFilter').value;
+                const minRating = parseFloat(document.getElementById('ratingFilter').value) || 0;
+                
+                // Apply text search
+                if (searchQuery) {
+                    filteredServices = filteredServices.filter(service => 
+                        service.name.toLowerCase().includes(searchQuery) ||
+                        service.specialty.toLowerCase().includes(searchQuery) ||
+                        service.description.toLowerCase().includes(searchQuery)
+                    );
+                }
+                
+                // Apply category filter
+                if (category) {
+                    filteredServices = filteredServices.filter(service => 
+                        service.category === category
+                    );
+                }
+                
+                // Apply price filter
+                if (priceRange) {
+                    const [min, max] = priceRange.split('-').map(val => val === '+' ? Infinity : parseInt(val));
+                    filteredServices = filteredServices.filter(service => {
+                        if (priceRange.endsWith('+')) {
+                            return service.price >= min;
+                        }
+                        return service.price >= min && service.price <= max;
+                    });
+                }
+                
+                // Apply rating filter
+                if (minRating > 0) {
+                    filteredServices = filteredServices.filter(service => 
+                        service.rating >= minRating
+                    );
+                }
+                
+                // Apply availability filters
+                const availabilityCheckboxes = document.querySelectorAll('input[name="availability"]:checked');
+                if (availabilityCheckboxes.length > 0) {
+                    const selectedAvailability = Array.from(availabilityCheckboxes).map(cb => cb.value);
+                    filteredServices = filteredServices.filter(service =>
+                        selectedAvailability.some(avail => service.availability.includes(avail))
+                    );
+                }
+                
+                // Apply service type filters
+                const serviceTypeCheckboxes = document.querySelectorAll('input[name="serviceType"]:checked');
+                if (serviceTypeCheckboxes.length > 0) {
+                    const selectedServiceTypes = Array.from(serviceTypeCheckboxes).map(cb => cb.value);
+                    filteredServices = filteredServices.filter(service =>
+                        selectedServiceTypes.some(type => service.serviceType.includes(type))
+                    );
+                }
+                
+                // Apply distance filter
+                const selectedDistance = document.querySelector('input[name="distance"]:checked')?.value;
+                if (selectedDistance && selectedDistance !== 'any') {
+                    const maxDistance = parseFloat(selectedDistance);
+                    filteredServices = filteredServices.filter(service => {
+                        const distance = parseFloat(service.distance.split(' ')[0]);
+                        return distance <= maxDistance;
+                    });
+                }
+                
+                currentServices = filteredServices;
+                currentPage = 1;
+                
+                updateResults();
+            }, 300);
+        }
+        
+        function sortResults() {
+            const sortBy = document.getElementById('sortBy').value;
+            
+            switch(sortBy) {
+                case 'rating':
+                    currentServices.sort((a, b) => b.rating - a.rating);
+                    break;
+                case 'price_low':
+                    currentServices.sort((a, b) => a.price - b.price);
+                    break;
+                case 'price_high':
+                    currentServices.sort((a, b) => b.price - a.price);
+                    break;
+                case 'name':
+                    currentServices.sort((a, b) => a.name.localeCompare(b.name));
+                    break;
+                case 'distance':
+                    currentServices.sort((a, b) => {
+                        const distA = parseFloat(a.distance.split(' ')[0]);
+                        const distB = parseFloat(b.distance.split(' ')[0]);
+                        return distA - distB;
+                    });
+                    break;
+            }
+            
+            currentPage = 1;
+            updateResults();
+        }
+        
+        function clearFilters() {
+            // Reset all inputs
+            document.getElementById('searchInput').value = '';
+            document.getElementById('categoryFilter').value = '';
+            document.getElementById('priceFilter').value = '';
+            document.getElementById('ratingFilter').value = '';
+            document.getElementById('sortBy').value = 'rating';
+            
+            // Uncheck all checkboxes
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+            
+            // Reset radio buttons
+            document.querySelector('input[name="distance"][value="any"]').checked = true;
+            
+            // Reset filter chips
+            document.querySelectorAll('.filter-chip').forEach(chip => {
+                chip.classList.remove('active');
+            });
+            
+            // Reset services
+            currentServices = [...mockServices];
+            currentPage = 1;
+            
+            updateResults();
+        }
+        
+        function updateResults() {
+            loadingState.classList.add('hidden');
+            
+            // Update count
+            resultsCount.textContent = `${currentServices.length} serviços encontrados`;
+            
+            if (currentServices.length === 0) {
+                emptyState.classList.remove('hidden');
+                servicesList.classList.add('hidden');
+                pagination.innerHTML = '';
+                return;
+            }
+            
+            emptyState.classList.add('hidden');
+            servicesList.classList.remove('hidden');
+            
+            // Calculate pagination
+            const totalPages = Math.ceil(currentServices.length / servicesPerPage);
+            const startIndex = (currentPage - 1) * servicesPerPage;
+            const endIndex = startIndex + servicesPerPage;
+            const pageServices = currentServices.slice(startIndex, endIndex);
+            
+            // Render services
+            servicesList.innerHTML = pageServices.map(service => `
+                <div class="service-card bg-white dark:bg-surface-dark rounded-2xl p-5 border border-gray-100 dark:border-white/5 hover:shadow-xl transition-all animate-fade-in">
+                    <!-- Service Header -->
+                    <div class="flex items-start gap-4 mb-4">
+                        <div class="relative">
+                            <img 
+                                src="${service.image}" 
+                                alt="${service.name}"
+                                class="w-16 h-16 rounded-xl object-cover"
+                            >
+                            ${service.verified ? `
+                                <div class="absolute -bottom-2 -right-2 bg-primary text-background-dark text-[10px] font-bold px-2 py-0.5 rounded-full border-2 border-white dark:border-surface-dark">
+                                    VERIFICADO
+                                </div>
+                            ` : ''}
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex justify-between items-start">
+                                <h3 class="font-bold text-lg text-gray-900 dark:text-white truncate">
+                                    ${service.name}
+                                </h3>
+                                <div class="flex items-center gap-1 bg-gray-100 dark:bg-white/5 px-2 py-1 rounded-lg">
+                                    <span class="material-symbols-outlined text-amber-400 fill-current text-sm">star</span>
+                                    <span class="text-sm font-bold">${service.rating}</span>
+                                    <span class="text-xs text-gray-500 dark:text-gray-400">(${service.reviewCount})</span>
+                                </div>
+                            </div>
+                            <p class="text-primary font-medium text-sm mt-1">
+                                ${service.specialty}
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Service Description -->
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2">
+                        ${service.description}
+                    </p>
+                    
+                    <!-- Service Details -->
+                    <div class="space-y-3 mb-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2 text-gray-500 dark:text-gray-400">
+                                <span class="material-symbols-outlined text-sm">location_on</span>
+                                <span class="text-sm">${service.distance}</span>
+                            </div>
+                            <div class="text-lg font-bold text-gray-900 dark:text-white">
+                                R$ ${service.price}
+                                <span class="text-sm font-normal text-gray-500 dark:text-gray-400">/consulta</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Availability Badges -->
+                        <div class="flex flex-wrap gap-2">
+                            ${service.serviceType.includes('home') ? `
+                                <span class="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 text-xs rounded-full">
+                                    Domiciliar
+                                </span>
+                            ` : ''}
+                            ${service.serviceType.includes('online') ? `
+                                <span class="px-2 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-300 text-xs rounded-full">
+                                    Online
+                                </span>
+                            ` : ''}
+                            ${service.availability.includes('urgent') ? `
+                                <span class="px-2 py-1 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-300 text-xs rounded-full">
+                                    24h
+                                </span>
+                            ` : ''}
+                        </div>
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="flex gap-3">
+                        <button 
+                            onclick="viewService(${service.id})"
+                            class="flex-1 py-2.5 bg-gray-100 dark:bg-white/5 hover:bg-gray-200 dark:hover:bg-white/10 text-gray-700 dark:text-gray-300 font-medium rounded-lg transition-colors"
+                        >
+                            Ver Detalhes
+                        </button>
+                        <button 
+                            onclick="bookService(${service.id})"
+                            class="flex-1 py-2.5 bg-primary hover:bg-primary-dark text-background-dark font-bold rounded-lg transition-colors shadow-sm shadow-primary/20"
+                        >
+                            Agendar
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Render pagination
+            renderPagination(totalPages);
+        }
+        
+        function renderPagination(totalPages) {
+            if (totalPages <= 1) {
+                pagination.innerHTML = '';
+                return;
+            }
+            
+            let paginationHTML = `
+                <div class="flex items-center gap-2">
+                    <button 
+                        onclick="changePage(${currentPage - 1})"
+                        ${currentPage === 1 ? 'disabled' : ''}
+                        class="px-3 py-2 rounded-lg border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    >
+                        <span class="material-symbols-outlined">chevron_left</span>
+                    </button>
+            `;
+            
+            // Show page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === currentPage) {
+                    paginationHTML += `
+                        <button class="px-4 py-2 bg-primary text-background-dark font-bold rounded-lg">
+                            ${i}
+                        </button>
+                    `;
+                } else if (
+                    i === 1 || 
+                    i === totalPages || 
+                    (i >= currentPage - 1 && i <= currentPage + 1)
+                ) {
+                    paginationHTML += `
+                        <button 
+                            onclick="changePage(${i})"
+                            class="px-4 py-2 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5 rounded-lg transition-colors"
+                        >
+                            ${i}
+                        </button>
+                    `;
+                } else if (i === currentPage - 2 || i === currentPage + 2) {
+                    paginationHTML += `<span class="px-2 text-gray-400">...</span>`;
+                }
+            }
+            
+            paginationHTML += `
+                <button 
+                    onclick="changePage(${currentPage + 1})"
+                    ${currentPage === totalPages ? 'disabled' : ''}
+                    class="px-3 py-2 rounded-lg border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                    <span class="material-symbols-outlined">chevron_right</span>
+                </button>
+            </div>
+            `;
+            
+            pagination.innerHTML = paginationHTML;
+        }
+        
+        function changePage(page) {
+            const totalPages = Math.ceil(currentServices.length / servicesPerPage);
+            if (page >= 1 && page <= totalPages) {
+                currentPage = page;
+                updateResults();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+        
+        function loadServices() {
+            setTimeout(() => {
+                updateResults();
+            }, 500);
+        }
+        
+        // Global functions
+        window.performSearch = performSearch;
+        window.clearFilters = clearFilters;
+        window.sortResults = sortResults;
+        window.changePage = changePage;
+        
+        function viewService(serviceId) {
+            const service = mockServices.find(s => s.id === serviceId);
+            if (service) {
+                // Save service to localStorage for details page
+                localStorage.setItem('selectedService', JSON.stringify(service));
+                // Redirect to service details page (create this page)
+                window.location.href = `service-details.html?id=${serviceId}`;
+            }
+        }
+        
+        function bookService(serviceId) {
+            const service = mockServices.find(s => s.id === serviceId);
+            if (service) {
+                // Save service to localStorage for booking page
+                localStorage.setItem('bookingService', JSON.stringify(service));
+                // Redirect to booking page
+                window.location.href = `booking.html?service=${serviceId}`;
+            }
+        }
+        
+        // Make functions globally available
+        window.viewService = viewService;
+        window.bookService = bookService;
+    </script>
+</body>
+</html>

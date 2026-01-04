@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - HealthConnect</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    
+    <!-- Tailwind Configuration -->
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13ec5b",
+                        "primary-dark": "#11d852",
+                        "background-light": "#f6f8f6",
+                        "background-dark": "#102216",
+                        "surface-dark": "#1A2E22",
+                        "surface-light": "#ffffff",
+                        "text-dark": "#1a2e22",
+                        "text-light": "#f6f8f6",
+                        "status-pending": "#f59e0b",
+                        "status-confirmed": "#3b82f6",
+                        "status-inprogress": "#10b981",
+                        "status-completed": "#8b5cf6"
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.75rem",
+                        "lg": "1rem",
+                        "xl": "1.25rem",
+                        "2xl": "1.5rem"
+                    }
+                },
+            },
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Lexend', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #13ec5b 0%, #0bc44a 100%);
+        }
+        
+        .status-pending {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+        
+        .status-confirmed {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+        }
+        
+        .status-inprogress {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+        
+        .status-completed {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+        }
+        
+        .sidebar-link {
+            transition: all 0.2s ease;
+        }
+        
+        .sidebar-link.active {
+            background: linear-gradient(135deg, rgba(19, 236, 91, 0.1) 0%, rgba(11, 196, 74, 0.1) 100%);
+            border-left: 3px solid #13ec5b;
+        }
+        
+        .floating-action-button {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        .appointment-card {
+            transition: all 0.3s ease;
+        }
+        
+        .appointment-card:hover {
+            transform: translateX(4px);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-text-dark dark:text-text-light font-display">
+    <!-- Dashboard Layout -->
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <aside class="hidden lg:flex lg:flex-col lg:w-64 bg-white dark:bg-surface-dark border-r border-gray-100 dark:border-white/5">
+            <!-- Logo -->
+            <div class="p-6">
+                <a href="index.html" class="flex items-center gap-3">
+                    <div class="bg-primary/10 p-3 rounded-xl">
+                        <span class="material-symbols-outlined text-primary text-2xl">local_hospital</span>
+                    </div>
+                    <span class="text-xl font-bold text-text-dark dark:text-white">HealthConnect</span>
+                </a>
+            </div>
+            
+            <!-- User Profile -->
+            <div class="px-6 py-4 border-b border-gray-100 dark:border-white/5">
+                <div class="flex items-center gap-3">
+                    <div class="relative">
+                        <img 
+                            src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face" 
+                            alt="Maria Silva"
+                            class="w-12 h-12 rounded-full object-cover"
+                        >
+                        <div class="absolute bottom-0 right-0 w-3 h-3 bg-primary rounded-full border-2 border-white dark:border-surface-dark"></div>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Bem-vindo(a),</p>
+                        <h3 class="font-bold text-text-dark dark:text-white" id="userName">Maria Silva</h3>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Navigation -->
+            <nav class="flex-1 p-4">
+                <div class="space-y-1">
+                    <a href="#overview" class="sidebar-link flex items-center gap-3 p-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5 active">
+                        <span class="material-symbols-outlined">dashboard</span>
+                        <span>Visão Geral</span>
+                    </a>
+                    
+                    <a href="#appointments" class="sidebar-link flex items-center gap-3 p-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5">
+                        <span class="material-symbols-outlined">calendar_month</span>
+                        <span>Meus Agendamentos</span>
+                    </a>
+                    
+                    <a href="#history" class="sidebar-link flex items-center gap-3 p-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5">
+                        <span class="material-symbols-outlined">history</span>
+                        <span>Histórico</span>
+                    </a>
+                    
+                    <a href="#profile" class="sidebar-link flex items-center gap-3 p-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5">
+                        <span class="material-symbols-outlined">person</span>
+                        <span>Meu Perfil</span>
+                    </a>
+                    
+                    <a href="#health" class="sidebar-link flex items-center gap-3 p-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5">
+                        <span class="material-symbols-outlined">monitor_heart</span>
+                        <span>Saúde</span>
+                    </a>
+                    
+                    <a href="#documents" class="sidebar-link flex items-center gap-3 p-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5">
+                        <span class="material-symbols-outlined">folder</span>
+                        <span>Documentos</span>
+                    </a>
+                    
+                    <a href="#support" class="sidebar-link flex items-center gap-3 p-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5">
+                        <span class="material-symbols-outlined">support_agent</span>
+                        <span>Suporte</span>
+                    </a>
+                </div>
+            </nav>
+            
+            <!-- Logout -->
+            <div class="p-4 border-t border-gray-100 dark:border-white/5">
+                <button onclick="logout()" class="flex items-center gap-3 p-3 w-full text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors">
+                    <span class="material-symbols-outlined">logout</span>
+                    <span>Sair</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Mobile Header -->
+            <header class="lg:hidden bg-white dark:bg-surface-dark border-b border-gray-100 dark:border-white/5">
+                <div class="px-4 py-3 flex items-center justify-between">
+                    <!-- Mobile Menu Button -->
+                    <button id="mobileMenuButton" class="text-gray-600 dark:text-gray-300">
+                        <span class="material-symbols-outlined text-2xl">menu</span>
+                    </button>
+                    
+                   
+                    
+                    <!-- Notifications -->
+                    <button class="relative text-gray-600 dark:text-gray-300">
+                        <span class="material-symbols-outlined">notifications</span>
+                        <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Mobile Sidebar -->
+            <div id="mobileSidebar" class="lg:hidden fixed inset-0 z-50 bg-black/50 hidden">
+                <div class="absolute left-0 top-0 bottom-0 w-64 bg-white dark:bg-surface-dark transform transition-transform">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-8">
+                            <a href="index.html" class="flex items-center gap-3">
+                                <div class="bg-primary/10 p-3 rounded-xl">
+                                    <span class="material-symbols-outlined text-primary text-2xl">local_hospital</span>
+                                </div>
+                                <span class="text-xl font-bold text-text-dark dark:text-white">HealthConnect</span>
+                            </a>
+                            <button id="closeMobileMenu" class="text-gray-600 dark:text-gray-300">
+                                <span class="material-symbols-outlined text-2xl">close</span>
+                            </button>
+                        </div>
+                        
+                        <!-- Mobile Navigation -->
+                        <nav class="space-y-1">
+                            <a href="#overview" class="sidebar-link flex items-center gap-3 p-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5 active">
+                                <span class="material-symbols-outlined">dashboard</span>
+                                <span>Visão Geral</span>
+                            </a>
+                            
+                            <a href="#appointments" class="sidebar-link flex items-center gap-3 p-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5">
+                                <span class="material-symbols-outlined">calendar_month</span>
+                                <span>Meus Agendamentos</span>
+                            </a>
+                            
+                            <a href="#history" class="sidebar-link flex items-center gap-3 p-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5">
+                                <span class="material-symbols-outlined">history</span>
+                                <span>Histórico</span>
+                            </a>
+                            
+                            <a href="#profile" class="sidebar-link flex items-center gap-3 p-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5">
+                                <span class="material-symbols-outlined">person</span>
+                                <span>Meu Perfil</span>
+                            </a>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content Area -->
+            <main class="flex-1 overflow-y-auto p-4 lg:p-6">
+                <!-- Header -->
+                <div class="mb-8">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div>
+                            <h1 class="text-2xl lg:text-3xl font-bold text-text-dark dark:text-white">
+                                Olá, <span id="userNameMobile">Maria</span>!
+                            </h1>
+                            <p class="text-gray-600 dark:text-gray-300 mt-1">
+                                Aqui está o resumo da sua saúde
+                            </p>
+                        </div>
+                        
+                        <button 
+                            onclick="newAppointment()"
+                            class="gradient-bg hover:bg-primary-dark text-background-dark font-bold py-3 px-6 rounded-xl shadow-lg shadow-primary/25 transform transition hover:scale-[1.02] active:scale-[0.98] flex items-center gap-2"
+                        >
+                            <span class="material-symbols-outlined">add</span>
+                            Novo Agendamento
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Status Board -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                    <div class="status-pending rounded-2xl p-6 text-white shadow-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="font-bold text-lg">Pendentes</h3>
+                            <span class="material-symbols-outlined">schedule</span>
+                        </div>
+                        <span id="count-pending" class="text-3xl font-bold">2</span>
+                        <p class="text-sm opacity-90 mt-2">Aguardando confirmação</p>
+                    </div>
+                    
+                    <div class="status-confirmed rounded-2xl p-6 text-white shadow-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="font-bold text-lg">Confirmados</h3>
+                            <span class="material-symbols-outlined">check_circle</span>
+                        </div>
+                        <span id="count-confirmed" class="text-3xl font-bold">3</span>
+                        <p class="text-sm opacity-90 mt-2">Agendamentos ativos</p>
+                    </div>
+                    
+                    <div class="status-inprogress rounded-2xl p-6 text-white shadow-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="font-bold text-lg">Em Andamento</h3>
+                            <span class="material-symbols-outlined">play_circle</span>
+                        </div>
+                        <span id="count-inprogress" class="text-3xl font-bold">1</span>
+                        <p class="text-sm opacity-90 mt-2">Sendo atendido agora</p>
+                    </div>
+                    
+                    <div class="status-completed rounded-2xl p-6 text-white shadow-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="font-bold text-lg">Concluídos</h3>
+                            <span class="material-symbols-outlined">done_all</span>
+                        </div>
+                        <span id="count-completed" class="text-3xl font-bold">12</span>
+                        <p class="text-sm opacity-90 mt-2">Este mês</p>
+                    </div>
+                </div>
+
+                <!-- Two Column Layout -->
+                <div class="grid lg:grid-cols-3 gap-8">
+                    <!-- Left Column - Appointments -->
+                    <div class="lg:col-span-2">
+                        <!-- Appointments Header -->
+                        <div class="flex items-center justify-between mb-6">
+                            <h2 class="text-xl font-bold text-text-dark dark:text-white">
+                                Agendamentos Recentes
+                            </h2>
+                            <a href="#appointments" class="text-primary hover:text-primary-dark font-medium text-sm flex items-center gap-1">
+                                Ver todos
+                                <span class="material-symbols-outlined text-sm">chevron_right</span>
+                            </a>
+                        </div>
+                        
+                        <!-- Appointments List -->
+                        <div id="appointments-container" class="space-y-4">
+                            <!-- Appointments will be loaded here -->
+                        </div>
+                        
+                        <!-- Loading State -->
+                        <div id="appointments-loading" class="text-center py-8">
+                            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+                            <p class="text-gray-600 dark:text-gray-300">Carregando agendamentos...</p>
+                        </div>
+                        
+                        <!-- Empty State -->
+                        <div id="appointments-empty" class="hidden text-center py-12">
+                            <div class="text-gray-400 mb-4">
+                                <span class="material-symbols-outlined text-4xl">calendar_month</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-gray-700 dark:text-gray-300 mb-2">
+                                Nenhum agendamento encontrado
+                            </h3>
+                            <p class="text-gray-600 dark:text-gray-300 mb-6">
+                                Agende sua primeira consulta
+                            </p>
+                            <button 
+                                onclick="newAppointment()"
+                                class="gradient-bg hover:bg-primary-dark text-background-dark font-semibold py-3 px-6 rounded-xl transition-all active:scale-95"
+                            >
+                                Agendar agora
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Right Column - Quick Actions & Health -->
+                    <div class="space-y-8">
+                        <!-- Quick Actions -->
+                        <div class="bg-white dark:bg-surface-dark rounded-2xl p-6 border border-gray-100 dark:border-white/5">
+                            <h3 class="font-bold text-lg text-text-dark dark:text-white mb-4">
+                                Ações Rápidas
+                            </h3>
+                            <div class="grid grid-cols-2 gap-3">
+                                <button 
+                                    onclick="viewDocuments()"
+                                    class="flex flex-col items-center justify-center p-4 bg-gray-50 dark:bg-white/5 hover:bg-gray-100 dark:hover:bg-white/10 rounded-xl transition-colors"
+                                >
+                                    <span class="material-symbols-outlined text-blue-500 text-2xl mb-2">folder</span>
+                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Documentos</span>
+                                </button>
+                                
+                                <button 
+                                    onclick="viewExams()"
+                                    class="flex flex-col items-center justify-center p-4 bg-gray-50 dark:bg-white/5 hover:bg-gray-100 dark:hover:bg-white/10 rounded-xl transition-colors"
+                                >
+                                    <span class="material-symbols-outlined text-purple-500 text-2xl mb-2">lab_profile</span>
+                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Exames</span>
+                                </button>
+                                
+                                <button 
+                                    onclick="viewMedications()"
+                                    class="flex flex-col items-center justify-center p-4 bg-gray-50 dark:bg-white/5 hover:bg-gray-100 dark:hover:bg-white/10 rounded-xl transition-colors"
+                                >
+                                    <span class="material-symbols-outlined text-green-500 text-2xl mb-2">medication</span>
+                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Medicamentos</span>
+                                </button>
+                                
+                                <button 
+                                    onclick="contactSupport()"
+                                    class="flex flex-col items-center justify-center p-4 bg-gray-50 dark:bg-white/5 hover:bg-gray-100 dark:hover:bg-white/10 rounded-xl transition-colors"
+                                >
+                                    <span class="material-symbols-outlined text-orange-500 text-2xl mb-2">support_agent</span>
+                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Suporte</span>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Health Summary -->
+                        <div class="bg-white dark:bg-surface-dark rounded-2xl p-6 border border-gray-100 dark:border-white/5">
+                            <h3 class="font-bold text-lg text-text-dark dark:text-white mb-4">
+                                Resumo de Saúde
+                            </h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <div class="flex justify-between text-sm mb-1">
+                                        <span class="text-gray-600 dark:text-gray-300">Pressão Arterial</span>
+                                        <span class="font-medium text-green-600">Normal</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 dark:bg-white/5 rounded-full h-2">
+                                        <div class="bg-green-500 h-2 rounded-full" style="width: 80%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <div class="flex justify-between text-sm mb-1">
+                                        <span class="text-gray-600 dark:text-gray-300">Glicemia</span>
+                                        <span class="font-medium text-yellow-600">Atenção</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 dark:bg-white/5 rounded-full h-2">
+                                        <div class="bg-yellow-500 h-2 rounded-full" style="width: 60%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <div class="flex justify-between text-sm mb-1">
+                                        <span class="text-gray-600 dark:text-gray-300">Frequência Cardíaca</span>
+                                        <span class="font-medium text-green-600">Ideal</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 dark:bg-white/5 rounded-full h-2">
+                                        <div class="bg-green-500 h-2 rounded-full" style="width: 90%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button 
+                                onclick="viewHealthDetails()"
+                                class="w-full mt-6 py-3 bg-primary/10 hover:bg-primary/20 text-primary font-medium rounded-xl transition-colors"
+                            >
+                                Ver detalhes completos
+                            </button>
+                        </div>
+                        
+                        <!-- Upcoming Appointment -->
+                        <div id="nextAppointmentCard" class="bg-gradient-to-r from-primary/10 to-primary/5 border border-primary/20 rounded-2xl p-5">
+                            <h3 class="font-bold text-lg text-text-dark dark:text-white mb-3">
+                                Próximo Agendamento
+                            </h3>
+                            <div class="flex items-start gap-3 mb-4">
+                                <img 
+                                    src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=100&h=100&fit=crop&crop=face" 
+                                    alt="Dr. Roberto"
+                                    class="w-12 h-12 rounded-full object-cover"
+                                >
+                                <div>
+                                    <h4 class="font-bold text-text-dark dark:text-white">Dr. Roberto Silva</h4>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300">Cardiologista</p>
+                                </div>
+                            </div>
+                            <div class="space-y-2 mb-4">
+                                <div class="flex items-center gap-2 text-sm">
+                                    <span class="material-symbols-outlined text-gray-500">calendar_month</span>
+                                    <span class="text-gray-700 dark:text-gray-300">Hoje, 14:00</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-sm">
+                                    <span class="material-symbols-outlined text-gray-500">video_camera_front</span>
+                                    <span class="text-gray-700 dark:text-gray-300">Teleconsulta</span>
+                                </div>
+                            </div>
+                            <button 
+                                onclick="joinVirtualRoom()"
+                                class="w-full gradient-bg hover:bg-primary-dark text-background-dark font-bold py-3 rounded-xl transition-colors"
+                            >
+                                Entrar na Sala Virtual
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Floating Action Button (Mobile) -->
+    <button 
+        onclick="newAppointment()"
+        class="lg:hidden fixed bottom-24 right-6 z-40 floating-action-button gradient-bg text-background-dark w-14 h-14 rounded-full shadow-lg shadow-primary/30 flex items-center justify-center"
+    >
+        <span class="material-symbols-outlined text-2xl">add</span>
+    </button>
+
+    <!-- Bottom Navigation (Mobile) -->
+    <nav class="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-white dark:bg-surface-dark border-t border-gray-100 dark:border-white/5 py-3">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-around items-center">
+                <a href="dashboard.html" class="flex flex-col items-center text-primary">
+                    <span class="material-symbols-outlined text-2xl">home</span>
+                    <span class="text-xs mt-1">Início</span>
+                </a>
+                
+                <a href="search.html" class="flex flex-col items-center text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined text-2xl">search</span>
+                    <span class="text-xs mt-1">Buscar</span>
+                </a>
+                
+                <div class="relative -top-6">
+                    <!-- Spacer for FAB -->
+                </div>
+                
+                <a href="appointments.html" class="flex flex-col items-center text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined text-2xl">calendar_month</span>
+                    <span class="text-xs mt-1">Agendamentos</span>
+                </a>
+                
+                <a href="profile.html" class="flex flex-col items-center text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined text-2xl">person</span>
+                    <span class="text-xs mt-1">Perfil</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- JavaScript -->
+    <script type="module">
+        // Mobile menu functionality
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const closeMobileMenu = document.getElementById('closeMobileMenu');
+        const mobileSidebar = document.getElementById('mobileSidebar');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileSidebar.classList.remove('hidden');
+        });
+        
+        closeMobileMenu.addEventListener('click', () => {
+            mobileSidebar.classList.add('hidden');
+        });
+        
+        mobileSidebar.addEventListener('click', (e) => {
+            if (e.target === mobileSidebar) {
+                mobileSidebar.classList.add('hidden');
+            }
+        });
+        
+        // Navigation active state
+        const navLinks = document.querySelectorAll('.sidebar-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                if (!this.getAttribute('href').startsWith('#')) {
+                    return; // Allow external links
+                }
+                
+                e.preventDefault();
+                navLinks.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Close mobile menu if open
+                mobileSidebar.classList.add('hidden');
+            });
+        });
+        
+        // Mock data for appointments
+        const mockAppointments = [
+            {
+                id: 1,
+                service: "Consulta Cardiológica",
+                provider: "Dr. Roberto Silva",
+                date: "Hoje, 14:00",
+                status: "confirmed",
+                type: "virtual",
+                address: "Teleconsulta",
+                notes: "Levar exames recentes"
+            },
+            {
+                id: 2,
+                service: "Exames de Sangue",
+                provider: "Lab. Saúde Total",
+                date: "Amanhã, 09:00",
+                status: "pending",
+                type: "home",
+                address: "Av. Paulista, 1000",
+                notes: "Jejum de 12 horas"
+            },
+            {
+                id: 3,
+                service: "Fisioterapia",
+                provider: "Roberto Mendes",
+                date: "Quarta, 16:30",
+                status: "confirmed",
+                type: "clinic",
+                address: "R. Augusta, 500",
+                notes: "Trazer radiografia"
+            },
+            {
+                id: 4,
+                service: "Consulta Dermatológica",
+                provider: "Dra. Ana Souza",
+                date: "12/12, 10:00",
+                status: "pending",
+                type: "virtual",
+                address: "Teleconsulta",
+                notes: "Fotografar lesões"
+            },
+            {
+                id: 5,
+                service: "Acompanhamento Nutricional",
+                provider: "Dra. Carla Santos",
+                date: "10/12, 15:00",
+                status: "completed",
+                type: "virtual",
+                address: "Teleconsulta",
+                notes: "Relatório alimentar"
+            }
+        ];
+        
+        // Load dashboard data
+        document.addEventListener('DOMContentLoaded', () => {
+            loadUserData();
+            loadAppointments();
+            updateStats();
+        });
+        
+        function loadUserData() {
+            // Get user from localStorage
+            const userStr = localStorage.getItem('user');
+            if (userStr) {
+                try {
+                    const user = JSON.parse(userStr);
+                    document.getElementById('userName').textContent = user.name;
+                    document.getElementById('userNameMobile').textContent = user.name.split(' ')[0];
+                } catch (e) {
+                    console.error('Error parsing user data:', e);
+                }
+            }
+        }
+        
+        function loadAppointments() {
+            const container = document.getElementById('appointments-container');
+            const loading = document.getElementById('appointments-loading');
+            const empty = document.getElementById('appointments-empty');
+            
+            // Simulate API delay
+            setTimeout(() => {
+                loading.style.display = 'none';
+                
+                if (mockAppointments.length === 0) {
+                    empty.classList.remove('hidden');
+                    return;
+                }
+                
+                container.innerHTML = mockAppointments.map(apt => `
+                    <div class="appointment-card bg-white dark:bg-surface-dark rounded-xl p-5 border border-gray-100 dark:border-white/5 hover:shadow-lg transition-all">
+                        <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+                            <div class="flex-1">
+                                <div class="flex items-start gap-3">
+                                    <div class="w-10 h-10 rounded-lg ${getStatusColor(apt.status)} flex items-center justify-center">
+                                        <span class="material-symbols-outlined text-white">
+                                            ${getStatusIcon(apt.status)}
+                                        </span>
+                                    </div>
+                                    <div class="flex-1">
+                                        <h4 class="font-bold text-text-dark dark:text-white mb-1">
+                                            ${apt.service}
+                                        </h4>
+                                        <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">
+                                            ${apt.provider}
+                                        </p>
+                                        <div class="flex flex-wrap gap-4">
+                                            <div class="flex items-center gap-2 text-sm">
+                                                <span class="material-symbols-outlined text-gray-400">schedule</span>
+                                                <span class="text-gray-700 dark:text-gray-300">${apt.date}</span>
+                                            </div>
+                                            <div class="flex items-center gap-2 text-sm">
+                                                <span class="material-symbols-outlined text-gray-400">location_on</span>
+                                                <span class="text-gray-700 dark:text-gray-300">${apt.address}</span>
+                                            </div>
+                                        </div>
+                                        ${apt.notes ? `
+                                            <div class="mt-3 p-3 bg-gray-50 dark:bg-white/5 rounded-lg">
+                                                <p class="text-sm text-gray-600 dark:text-gray-300">
+                                                    <span class="font-medium">Observação:</span> ${apt.notes}
+                                                </p>
+                                            </div>
+                                        ` : ''}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex flex-col gap-2 sm:w-32">
+                                <span class="inline-flex items-center justify-center px-3 py-1 rounded-full text-xs font-bold ${getStatusBadgeClass(apt.status)}">
+                                    ${getStatusText(apt.status)}
+                                </span>
+                                
+                                <div class="flex gap-2">
+                                    ${apt.status === 'confirmed' ? `
+                                        <button onclick="startChat(${apt.id})" class="flex-1 py-2 bg-gray-100 dark:bg-white/5 hover:bg-gray-200 dark:hover:bg-white/10 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-lg transition-colors">
+                                            Chat
+                                        </button>
+                                    ` : ''}
+                                    
+                                    ${apt.status === 'pending' ? `
+                                        <button onclick="cancelAppointment(${apt.id})" class="flex-1 py-2 bg-red-100 dark:bg-red-900/20 hover:bg-red-200 dark:hover:bg-red-900/30 text-red-600 dark:text-red-400 text-sm font-medium rounded-lg transition-colors">
+                                            Cancelar
+                                        </button>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }, 1000);
+        }
+        
+        function updateStats() {
+            const counts = {
+                pending: mockAppointments.filter(a => a.status === 'pending').length,
+                confirmed: mockAppointments.filter(a => a.status === 'confirmed').length,
+                inprogress: mockAppointments.filter(a => a.status === 'inprogress').length,
+                completed: mockAppointments.filter(a => a.status === 'completed').length
+            };
+            
+            document.getElementById('count-pending').textContent = counts.pending;
+            document.getElementById('count-confirmed').textContent = counts.confirmed;
+            document.getElementById('count-inprogress').textContent = counts.inprogress;
+            document.getElementById('count-completed').textContent = counts.completed;
+        }
+        
+        function getStatusColor(status) {
+            switch(status) {
+                case 'pending': return 'bg-status-pending';
+                case 'confirmed': return 'bg-status-confirmed';
+                case 'inprogress': return 'bg-status-inprogress';
+                case 'completed': return 'bg-status-completed';
+                default: return 'bg-gray-500';
+            }
+        }
+        
+        function getStatusIcon(status) {
+            switch(status) {
+                case 'pending': return 'schedule';
+                case 'confirmed': return 'check_circle';
+                case 'inprogress': return 'play_circle';
+                case 'completed': return 'done_all';
+                default: return 'help';
+            }
+        }
+        
+        function getStatusBadgeClass(status) {
+            switch(status) {
+                case 'pending': return 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300';
+                case 'confirmed': return 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300';
+                case 'inprogress': return 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300';
+                case 'completed': return 'bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300';
+                default: return 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-300';
+            }
+        }
+        
+        function getStatusText(status) {
+            const statusMap = {
+                'pending': 'Pendente',
+                'confirmed': 'Confirmado',
+                'inprogress': 'Em Andamento',
+                'completed': 'Concluído',
+                'cancelled': 'Cancelado'
+            };
+            return statusMap[status] || status;
+        }
+        
+        // Action functions
+        function newAppointment() {
+            window.location.href = 'search.html';
+        }
+        
+        function cancelAppointment(appointmentId) {
+            if (confirm('Tem certeza que deseja cancelar este agendamento?')) {
+                // Here you would make an API call to cancel the appointment
+                alert('Agendamento cancelado com sucesso!');
+                // Reload appointments
+                loadAppointments();
+                updateStats();
+            }
+        }
+        
+        function startChat(appointmentId) {
+            window.location.href = `chat.html?appointment=${appointmentId}`;
+        }
+        
+        function joinVirtualRoom() {
+            alert('Conectando à sala virtual...');
+            // In a real app, this would connect to a video call
+        }
+        
+        function viewDocuments() {
+            window.location.href = 'documents.html';
+        }
+        
+        function viewExams() {
+            window.location.href = 'exams.html';
+        }
+        
+        function viewMedications() {
+            window.location.href = 'medications.html';
+        }
+        
+        function contactSupport() {
+            window.location.href = 'support.html';
+        }
+        
+        function viewHealthDetails() {
+            window.location.href = 'health.html';
+        }
+        
+        function logout() {
+            if (confirm('Deseja realmente sair?')) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                window.location.href = 'index.html';
+            }
+        }
+        
+        // Make functions available globally
+        window.newAppointment = newAppointment;
+        window.cancelAppointment = cancelAppointment;
+        window.startChat = startChat;
+        window.joinVirtualRoom = joinVirtualRoom;
+        window.viewDocuments = viewDocuments;
+        window.viewExams = viewExams;
+        window.viewMedications = viewMedications;
+        window.contactSupport = contactSupport;
+        window.viewHealthDetails = viewHealthDetails;
+        window.logout = logout;
+    </script>
+</body>
+</html>

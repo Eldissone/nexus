@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendar Serviço - HealthConnect</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    
+    <!-- Tailwind Configuration -->
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13ec5b",
+                        "primary-dark": "#11d852",
+                        "background-light": "#f6f8f6",
+                        "background-dark": "#102216",
+                        "surface-dark": "#1A2E22",
+                        "surface-light": "#ffffff",
+                        "text-dark": "#1a2e22",
+                        "text-light": "#f6f8f6"
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.75rem",
+                        "lg": "1rem",
+                        "xl": "1.25rem",
+                        "2xl": "1.5rem"
+                    }
+                },
+            },
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Lexend', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #13ec5b 0%, #0bc44a 100%);
+        }
+        
+        .calendar-day {
+            transition: all 0.2s ease;
+        }
+        
+        .calendar-day.selected {
+            background: linear-gradient(135deg, #13ec5b 0%, #0bc44a 100%);
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(19, 236, 91, 0.3);
+        }
+        
+        .time-slot {
+            transition: all 0.2s ease;
+        }
+        
+        .time-slot.selected {
+            background: linear-gradient(135deg, #13ec5b 0%, #0bc44a 100%);
+            color: white;
+            border-color: transparent;
+        }
+        
+        .time-slot.booked {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            cursor: not-allowed;
+        }
+        
+        .time-slot.available:hover {
+            border-color: #13ec5b;
+            color: #13ec5b;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-text-dark dark:text-text-light font-display">
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 bg-white dark:bg-surface-dark border-b border-gray-100 dark:border-white/5">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <!-- Back Button and Logo -->
+                <div class="flex items-center gap-3">
+                    <a href="search.html" class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">
+                        <span class="material-symbols-outlined">arrow_back</span>
+                    </a>
+                    <a href="index.html" class="flex items-center gap-2">
+                        <div class="bg-primary/10 p-2 rounded-lg">
+                            <span class="material-symbols-outlined text-primary">local_hospital</span>
+                        </div>
+                        <span class="text-lg font-bold text-text-dark dark:text-white">HealthConnect</span>
+                    </a>
+                </div>
+                
+                <!-- Navigation Links -->
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="index.html" class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">
+                        Home
+                    </a>
+                    <a href="search.html" class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">
+                        Buscar
+                    </a>
+                    <a href="dashboard.html" class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">
+                        Dashboard
+                    </a>
+                </div>
+                
+                <!-- User Menu -->
+                <div class="flex items-center gap-4">
+                    <a href="profile.html" class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">
+                        <span class="material-symbols-outlined">person</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8 max-w-4xl">
+        <h1 class="text-3xl font-bold text-text-dark dark:text-white mb-8">
+            Finalizar Agendamento
+        </h1>
+        
+        <div class="grid lg:grid-cols-2 gap-8">
+            <!-- Left Column: Service Details and Form -->
+            <div>
+                <!-- Service Details Card -->
+                <div id="serviceDetails" class="bg-white dark:bg-surface-dark rounded-2xl p-6 mb-6 border border-gray-100 dark:border-white/5 shadow-lg">
+                    <div class="animate-pulse">
+                        <div class="flex items-start gap-4">
+                            <div class="w-16 h-16 bg-gray-200 dark:bg-white/5 rounded-xl"></div>
+                            <div class="flex-1 space-y-2">
+                                <div class="h-4 bg-gray-200 dark:bg-white/5 rounded w-3/4"></div>
+                                <div class="h-3 bg-gray-200 dark:bg-white/5 rounded w-1/2"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Booking Form -->
+                <form id="bookingForm" class="space-y-6">
+                    <!-- Date Selection -->
+                    <div class="bg-white dark:bg-surface-dark rounded-2xl p-6 border border-gray-100 dark:border-white/5">
+                        <h3 class="text-lg font-bold text-text-dark dark:text-white mb-4">
+                            Selecione a Data
+                        </h3>
+                        
+                        <div class="mb-4">
+                            <input 
+                                type="date" 
+                                id="date"
+                                required
+                                min=""
+                                class="w-full px-4 py-3 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+                            >
+                        </div>
+                        
+                        <!-- Calendar Preview -->
+                        <div class="mt-4">
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                                    Próximas datas disponíveis
+                                </h4>
+                                <button type="button" id="prevMonth" class="text-gray-500 hover:text-primary">
+                                    <span class="material-symbols-outlined">chevron_left</span>
+                                </button>
+                            </div>
+                            
+                            <div id="calendarStrip" class="flex gap-2 overflow-x-auto no-scrollbar pb-2">
+                                <!-- Calendar days will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Time Selection -->
+                    <div class="bg-white dark:bg-surface-dark rounded-2xl p-6 border border-gray-100 dark:border-white/5">
+                        <h3 class="text-lg font-bold text-text-dark dark:text-white mb-4">
+                            Selecione o Horário
+                        </h3>
+                        
+                        <div id="timeSlots" class="grid grid-cols-3 sm:grid-cols-4 gap-3">
+                            <!-- Time slots will be loaded here -->
+                            <div class="text-center py-4">
+                                <div class="animate-pulse">
+                                    <div class="h-10 bg-gray-200 dark:bg-white/5 rounded-lg"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <p id="noTimesMessage" class="hidden text-center text-gray-500 dark:text-gray-400 py-4">
+                            Selecione uma data primeiro
+                        </p>
+                    </div>
+                    
+                    <!-- Address -->
+                    <div class="bg-white dark:bg-surface-dark rounded-2xl p-6 border border-gray-100 dark:border-white/5">
+                        <h3 class="text-lg font-bold text-text-dark dark:text-white mb-4">
+                            Endereço para Atendimento
+                        </h3>
+                        
+                        <div>
+                            <label for="address" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Endereço completo
+                            </label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-3 text-gray-400">
+                                    <span class="material-symbols-outlined">location_on</span>
+                                </span>
+                                <input 
+                                    type="text" 
+                                    id="address"
+                                    placeholder="Rua, número, bairro, cidade"
+                                    required
+                                    class="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+                                >
+                            </div>
+                            <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                                Para atendimentos domiciliares, informe o endereço completo
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Notes -->
+                    <div class="bg-white dark:bg-surface-dark rounded-2xl p-6 border border-gray-100 dark:border-white/5">
+                        <h3 class="text-lg font-bold text-text-dark dark:text-white mb-4">
+                            Observações (Opcional)
+                        </h3>
+                        
+                        <div>
+                            <label for="notes" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Informações adicionais
+                            </label>
+                            <textarea 
+                                id="notes" 
+                                rows="4"
+                                placeholder="Descreva sintomas, necessidades especiais, alergias medicamentosas..."
+                                class="w-full px-4 py-3 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all resize-none"
+                            ></textarea>
+                            <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                                Estas informações serão compartilhadas com o profissional
+                            </p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Right Column: Summary and Payment -->
+            <div class="lg:sticky lg:top-24 h-fit">
+                <!-- Provider Card -->
+                <div class="bg-white dark:bg-surface-dark rounded-2xl p-6 mb-6 border border-gray-100 dark:border-white/5 shadow-lg">
+                    <div class="flex items-center gap-4 mb-4">
+                        <img 
+                            id="providerImage"
+                            src=""
+                            alt=""
+                            class="w-16 h-16 rounded-xl object-cover"
+                        >
+                        <div>
+                            <h3 id="providerName" class="font-bold text-lg text-text-dark dark:text-white">
+                                Carregando...
+                            </h3>
+                            <p id="providerSpecialty" class="text-primary font-medium text-sm">
+                                Carregando...
+                            </p>
+                            <div class="flex items-center gap-1 mt-1">
+                                <span class="material-symbols-outlined text-amber-400 text-sm fill-current">star</span>
+                                <span id="providerRating" class="text-sm font-bold">0.0</span>
+                                <span class="text-xs text-gray-500 dark:text-gray-400">(0 avaliações)</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Service Type Badge -->
+                    <div class="flex gap-2 mb-4">
+                        <span id="serviceTypeBadge" class="px-3 py-1 bg-primary/10 text-primary text-xs font-medium rounded-full">
+                            Carregando...
+                        </span>
+                        <span id="verificationBadge" class="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 text-xs font-medium rounded-full hidden">
+                            <span class="material-symbols-outlined text-xs align-middle">verified</span>
+                            Verificado
+                        </span>
+                    </div>
+                    
+                    <!-- Service Description -->
+                    <p id="serviceDescription" class="text-gray-600 dark:text-gray-300 text-sm">
+                        Carregando descrição do serviço...
+                    </p>
+                </div>
+                
+                <!-- Payment Summary -->
+                <div class="bg-white dark:bg-surface-dark rounded-2xl p-6 border border-gray-100 dark:border-white/5 shadow-lg sticky top-24">
+                    <h3 class="text-lg font-bold text-text-dark dark:text-white mb-6">
+                        Resumo do Agendamento
+                    </h3>
+                    
+                    <!-- Summary Details -->
+                    <div class="space-y-4 mb-6">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600 dark:text-gray-300">Serviço:</span>
+                            <span id="summaryService" class="font-medium">-</span>
+                        </div>
+                        
+                        <div class="flex justify-between">
+                            <span class="text-gray-600 dark:text-gray-300">Data:</span>
+                            <span id="summaryDate" class="font-medium">-</span>
+                        </div>
+                        
+                        <div class="flex justify-between">
+                            <span class="text-gray-600 dark:text-gray-300">Horário:</span>
+                            <span id="summaryTime" class="font-medium">-</span>
+                        </div>
+                        
+                        <div class="flex justify-between">
+                            <span class="text-gray-600 dark:text-gray-300">Tipo:</span>
+                            <span id="summaryType" class="font-medium">-</span>
+                        </div>
+                        
+                        <div class="flex justify-between">
+                            <span class="text-gray-600 dark:text-gray-300">Duração:</span>
+                            <span id="summaryDuration" class="font-medium">-</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Price Breakdown -->
+                    <div class="border-t border-gray-200 dark:border-white/10 pt-4 mb-6">
+                        <div class="flex justify-between mb-2">
+                            <span class="text-gray-600 dark:text-gray-300">Valor do serviço:</span>
+                            <span id="servicePrice" class="font-medium">R$ 0,00</span>
+                        </div>
+                        
+                        <div class="flex justify-between mb-2">
+                            <span class="text-gray-600 dark:text-gray-300">Taxa de deslocamento:</span>
+                            <span id="travelFee" class="font-medium">R$ 0,00</span>
+                        </div>
+                        
+                        <div class="flex justify-between">
+                            <span class="text-gray-600 dark:text-gray-300">Taxa da plataforma:</span>
+                            <span id="platformFee" class="font-medium">R$ 0,00</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Total -->
+                    <div class="border-t border-gray-200 dark:border-white/10 pt-4 mb-6">
+                        <div class="flex justify-between items-center">
+                            <span class="text-lg font-bold text-text-dark dark:text-white">Total:</span>
+                            <span id="totalPrice" class="text-2xl font-bold text-primary">R$ 0,00</span>
+                        </div>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                            Pagamento realizado ao profissional após o serviço
+                        </p>
+                    </div>
+                    
+                    <!-- Payment Methods -->
+                    <div class="mb-6">
+                        <h4 class="font-medium text-gray-700 dark:text-gray-300 mb-3">
+                            Método de Pagamento
+                        </h4>
+                        <div class="space-y-2">
+                            <label class="flex items-center p-3 border border-gray-200 dark:border-white/10 rounded-lg hover:border-primary dark:hover:border-primary cursor-pointer">
+                                <input 
+                                    type="radio" 
+                                    name="paymentMethod" 
+                                    value="credit_card" 
+                                    checked
+                                    class="h-4 w-4 text-primary focus:ring-primary border-gray-300 dark:border-gray-600"
+                                >
+                                <div class="ml-3">
+                                    <span class="font-medium">Cartão de Crédito</span>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Pague agora com segurança</p>
+                                </div>
+                                <span class="material-symbols-outlined text-gray-400 ml-auto">credit_card</span>
+                            </label>
+                            
+                            <label class="flex items-center p-3 border border-gray-200 dark:border-white/10 rounded-lg hover:border-primary dark:hover:border-primary cursor-pointer">
+                                <input 
+                                    type="radio" 
+                                    name="paymentMethod" 
+                                    value="pix"
+                                    class="h-4 w-4 text-primary focus:ring-primary border-gray-300 dark:border-gray-600"
+                                >
+                                <div class="ml-3">
+                                    <span class="font-medium">PIX</span>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Pagamento instantâneo</p>
+                                </div>
+                                <span class="material-symbols-outlined text-gray-400 ml-auto">qr_code</span>
+                            </label>
+                            
+                            <label class="flex items-center p-3 border border-gray-200 dark:border-white/10 rounded-lg hover:border-primary dark:hover:border-primary cursor-pointer">
+                                <input 
+                                    type="radio" 
+                                    name="paymentMethod" 
+                                    value="cash"
+                                    class="h-4 w-4 text-primary focus:ring-primary border-gray-300 dark:border-gray-600"
+                                >
+                                <div class="ml-3">
+                                    <span class="font-medium">Dinheiro</span>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Pague ao profissional</p>
+                                </div>
+                                <span class="material-symbols-outlined text-gray-400 ml-auto">payments</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Terms and Conditions -->
+                    <div class="mb-6">
+                        <label class="flex items-start">
+                            <input 
+                                type="checkbox" 
+                                id="terms"
+                                required
+                                class="h-4 w-4 mt-1 text-primary focus:ring-primary border-gray-300 dark:border-gray-600 rounded"
+                            >
+                            <span class="ml-2 text-sm text-gray-600 dark:text-gray-300">
+                                Concordo com os 
+                                <a href="#" class="text-primary hover:text-primary-dark">Termos de Uso</a> 
+                                e confirmo que li a 
+                                <a href="#" class="text-primary hover:text-primary-dark">Política de Cancelamento</a>
+                            </span>
+                        </label>
+                    </div>
+                    
+                    <!-- Confirm Button -->
+                    <button 
+                        type="submit"
+                        id="confirmButton"
+                        form="bookingForm"
+                        class="w-full gradient-bg hover:bg-primary-dark text-background-dark font-bold py-4 px-6 rounded-xl shadow-lg shadow-primary/25 transform transition hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                        disabled
+                    >
+                        <span id="buttonText">Confirmar Agendamento</span>
+                        <span id="loadingSpinner" class="hidden animate-spin material-symbols-outlined">refresh</span>
+                    </button>
+                    
+                    <!-- Success Message -->
+                    <div id="successMessage" class="hidden mt-4 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 text-green-600 dark:text-green-400 rounded-xl text-sm">
+                    </div>
+                    
+                    <!-- Error Message -->
+                    <div id="errorMessage" class="hidden mt-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 rounded-xl text-sm">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation (Mobile) -->
+    <nav class="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-white dark:bg-surface-dark border-t border-gray-100 dark:border-white/5 py-3">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-around items-center">
+                <a href="index.html" class="flex flex-col items-center text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined text-2xl">home</span>
+                    <span class="text-xs mt-1">Home</span>
+                </a>
+                
+                <a href="search.html" class="flex flex-col items-center text-primary">
+                    <span class="material-symbols-outlined text-2xl">search</span>
+                    <span class="text-xs mt-1">Buscar</span>
+                </a>
+                
+                <a href="dashboard.html" class="flex flex-col items-center text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined text-2xl">dashboard</span>
+                    <span class="text-xs mt-1">Dashboard</span>
+                </a>
+                
+                <a href="profile.html" class="flex flex-col items-center text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined text-2xl">person</span>
+                    <span class="text-xs mt-1">Perfil</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- JavaScript -->
+    <script type="module">
+        // Get service data from localStorage or URL parameters
+        const service = JSON.parse(localStorage.getItem('bookingService') || '{}');
+        const serviceId = new URLSearchParams(window.location.search).get('service');
+        
+        // Mock data for demonstration
+        const mockServices = {
+            1: {
+                id: 1,
+                name: "Consulta Cardiológica",
+                provider: "Dr. Roberto Silva",
+                specialty: "Cardiologista",
+                description: "Consulta especializada em saúde cardiovascular com avaliação completa e orientações personalizadas.",
+                price: 250.00,
+                duration: "60 minutos",
+                type: "virtual",
+                verified: true,
+                rating: 4.9,
+                reviews: 128,
+                image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=200&h=200&fit=crop&crop=face",
+                availableDates: ['2024-01-15', '2024-01-16', '2024-01-17', '2024-01-18'],
+                timeSlots: {
+                    '2024-01-15': ['09:00', '10:30', '14:00', '15:30', '17:00'],
+                    '2024-01-16': ['09:00', '10:30', '14:00', '15:30'],
+                    '2024-01-17': ['14:00', '15:30', '17:00'],
+                    '2024-01-18': ['09:00', '10:30', '14:00']
+                }
+            },
+            2: {
+                id: 2,
+                name: "Fisioterapia Domiciliar",
+                provider: "Roberto Mendes",
+                specialty: "Fisioterapeuta",
+                description: "Sessão de fisioterapia com técnicas de reabilitação e alívio da dor no conforto da sua casa.",
+                price: 120.00,
+                duration: "45 minutos",
+                type: "home",
+                verified: false,
+                rating: 4.7,
+                reviews: 45,
+                image: "https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=200&h=200&fit=crop&crop=face",
+                availableDates: ['2024-01-15', '2024-01-16', '2024-01-17'],
+                timeSlots: {
+                    '2024-01-15': ['08:00', '09:30', '11:00', '14:00', '15:30'],
+                    '2024-01-16': ['09:30', '11:00', '14:00', '15:30'],
+                    '2024-01-17': ['08:00', '09:30', '14:00']
+                }
+            }
+        };
+        
+        // Current state
+        let selectedService = null;
+        let selectedDate = null;
+        let selectedTime = null;
+        
+        // DOM Elements
+        const dateInput = document.getElementById('date');
+        const timeSlotsContainer = document.getElementById('timeSlots');
+        const noTimesMessage = document.getElementById('noTimesMessage');
+        const calendarStrip = document.getElementById('calendarStrip');
+        const confirmButton = document.getElementById('confirmButton');
+        const buttonText = document.getElementById('buttonText');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const successMessage = document.getElementById('successMessage');
+        const errorMessage = document.getElementById('errorMessage');
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadServiceData();
+            setupEventListeners();
+            initializeDatePicker();
+        });
+        
+        function loadServiceData() {
+            // Use service from URL or localStorage, fallback to mock
+            const serviceData = serviceId ? mockServices[serviceId] : (service.id ? service : mockServices[1]);
+            selectedService = serviceData;
+            
+            // Update UI with service data
+            updateServiceDetails(serviceData);
+            updateProviderDetails(serviceData);
+            updateSummary();
+            
+            // Set minimum date to tomorrow
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            dateInput.min = tomorrow.toISOString().split('T')[0];
+            
+            // Generate calendar strip
+            generateCalendarStrip(serviceData.availableDates);
+        }
+        
+        function updateServiceDetails(service) {
+            const container = document.getElementById('serviceDetails');
+            container.innerHTML = `
+                <div class="flex items-start gap-4">
+                    <div class="w-16 h-16 rounded-xl flex items-center justify-center ${service.type === 'virtual' ? 'bg-blue-100 dark:bg-blue-900/20' : 'bg-green-100 dark:bg-green-900/20'}">
+                        <span class="material-symbols-outlined text-2xl ${service.type === 'virtual' ? 'text-blue-600 dark:text-blue-400' : 'text-green-600 dark:text-green-400'}">
+                            ${service.type === 'virtual' ? 'videocam' : 'home'}
+                        </span>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-bold text-lg text-gray-900 dark:text-white mb-1">
+                            ${service.name}
+                        </h3>
+                        <p class="text-primary font-medium mb-2">
+                            ${service.type === 'virtual' ? 'Consulta Online' : 'Atendimento Domiciliar'}
+                        </p>
+                        <div class="flex items-center gap-4">
+                            <div class="flex items-center gap-1">
+                                <span class="material-symbols-outlined text-gray-400">schedule</span>
+                                <span class="text-sm text-gray-600 dark:text-gray-300">${service.duration}</span>
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <span class="material-symbols-outlined text-gray-400">attach_money</span>
+                                <span class="text-sm text-gray-600 dark:text-gray-300">R$ ${service.price.toFixed(2)}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function updateProviderDetails(service) {
+            document.getElementById('providerImage').src = service.image;
+            document.getElementById('providerName').textContent = service.provider;
+            document.getElementById('providerSpecialty').textContent = service.specialty;
+            document.getElementById('providerRating').textContent = service.rating;
+            document.getElementById('serviceDescription').textContent = service.description;
+            
+            // Update service type badge
+            const badge = document.getElementById('serviceTypeBadge');
+            badge.textContent = service.type === 'virtual' ? 'Consulta Online' : 'Atendimento Domiciliar';
+            badge.className = service.type === 'virtual' 
+                ? 'px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 text-xs font-medium rounded-full'
+                : 'px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-300 text-xs font-medium rounded-full';
+            
+            // Show verification badge if verified
+            if (service.verified) {
+                document.getElementById('verificationBadge').classList.remove('hidden');
+            }
+        }
+        
+        function updateSummary() {
+            if (!selectedService) return;
+            
+            // Update basic info
+            document.getElementById('summaryService').textContent = selectedService.name;
+            document.getElementById('summaryType').textContent = selectedService.type === 'virtual' ? 'Online' : 'Domiciliar';
+            document.getElementById('summaryDuration').textContent = selectedService.duration;
+            
+            // Update prices
+            const servicePrice = selectedService.price;
+            const travelFee = selectedService.type === 'home' ? 25.00 : 0;
+            const platformFee = servicePrice * 0.10; // 10% platform fee
+            
+            document.getElementById('servicePrice').textContent = `R$ ${servicePrice.toFixed(2)}`;
+            document.getElementById('travelFee').textContent = `R$ ${travelFee.toFixed(2)}`;
+            document.getElementById('platformFee').textContent = `R$ ${platformFee.toFixed(2)}`;
+            
+            const total = servicePrice + travelFee + platformFee;
+            document.getElementById('totalPrice').textContent = `R$ ${total.toFixed(2)}`;
+            
+            // Update date and time if selected
+            if (selectedDate) {
+                const dateObj = new Date(selectedDate);
+                document.getElementById('summaryDate').textContent = dateObj.toLocaleDateString('pt-BR', {
+                    weekday: 'long',
+                    day: 'numeric',
+                    month: 'long'
+                });
+            }
+            
+            if (selectedTime) {
+                document.getElementById('summaryTime').textContent = selectedTime;
+            }
+            
+            // Enable/disable confirm button
+            confirmButton.disabled = !(selectedDate && selectedTime);
+        }
+        
+        function setupEventListeners() {
+            // Date input change
+            dateInput.addEventListener('change', (e) => {
+                selectedDate = e.target.value;
+                selectedTime = null;
+                updateTimeSlots(selectedDate);
+                updateSummary();
+                updateCalendarSelection();
+            });
+            
+            // Form submission
+            document.getElementById('bookingForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                if (!selectedDate || !selectedTime) {
+                    showError('Por favor, selecione uma data e horário');
+                    return;
+                }
+                
+                // Get form data
+                const formData = {
+                    serviceId: selectedService.id,
+                    serviceName: selectedService.name,
+                    providerId: selectedService.providerId,
+                    providerName: selectedService.provider,
+                    date: selectedDate,
+                    time: selectedTime,
+                    address: document.getElementById('address').value,
+                    notes: document.getElementById('notes').value,
+                    paymentMethod: document.querySelector('input[name="paymentMethod"]:checked').value,
+                    total: calculateTotal()
+                };
+                
+                // Validate address
+                if (!formData.address.trim()) {
+                    showError('Por favor, informe o endereço para atendimento');
+                    return;
+                }
+                
+                // Validate terms
+                if (!document.getElementById('terms').checked) {
+                    showError('Por favor, aceite os termos e condições');
+                    return;
+                }
+                
+                // Show loading state
+                buttonText.textContent = 'Agendando...';
+                loadingSpinner.classList.remove('hidden');
+                confirmButton.disabled = true;
+                errorMessage.classList.add('hidden');
+                
+                try {
+                    // Simulate API call
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    
+                    // Show success
+                    showSuccess('Agendamento realizado com sucesso! Redirecionando...');
+                    buttonText.textContent = 'Sucesso!';
+                    
+                    // Save appointment to localStorage
+                    const appointment = {
+                        ...formData,
+                        id: Date.now(),
+                        status: 'pending',
+                        createdAt: new Date().toISOString()
+                    };
+                    
+                    // Save to localStorage (in real app, this would go to your API)
+                    const appointments = JSON.parse(localStorage.getItem('appointments') || '[]');
+                    appointments.push(appointment);
+                    localStorage.setItem('appointments', JSON.stringify(appointments));
+                    
+                    // Redirect to dashboard
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 1500);
+                    
+                } catch (error) {
+                    showError('Erro ao realizar agendamento. Tente novamente.');
+                    buttonText.textContent = 'Confirmar Agendamento';
+                    loadingSpinner.classList.add('hidden');
+                    confirmButton.disabled = false;
+                }
+            });
+            
+            // Previous month button
+            document.getElementById('prevMonth').addEventListener('click', () => {
+                // In a real app, this would load previous month's dates
+                alert('Funcionalidade de navegação por mês em desenvolvimento');
+            });
+        }
+        
+        function initializeDatePicker() {
+            // Set tomorrow as default
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            dateInput.value = tomorrow.toISOString().split('T')[0];
+            selectedDate = dateInput.value;
+            
+            // Load time slots for default date
+            updateTimeSlots(selectedDate);
+            updateSummary();
+        }
+        
+        function generateCalendarStrip(availableDates) {
+            if (!availableDates || availableDates.length === 0) return;
+            
+            // Sort dates
+            const sortedDates = [...availableDates].sort();
+            
+            // Generate next 7 days from today
+            const days = [];
+            const today = new Date();
+            
+            for (let i = 1; i <= 7; i++) {
+                const date = new Date(today);
+                date.setDate(today.getDate() + i);
+                const dateString = date.toISOString().split('T')[0];
+                
+                days.push({
+                    date: dateString,
+                    day: date.getDate(),
+                    weekday: date.toLocaleDateString('pt-BR', { weekday: 'short' }),
+                    available: availableDates.includes(dateString)
+                });
+            }
+            
+            // Render calendar days
+            calendarStrip.innerHTML = days.map(day => `
+                <button 
+                    type="button"
+                    class="calendar-day flex flex-col items-center justify-center min-w-[4.5rem] h-20 rounded-xl border ${day.available ? 'border-gray-200 dark:border-white/10 hover:border-primary' : 'border-gray-200 dark:border-white/5 opacity-50 cursor-not-allowed'} ${selectedDate === day.date ? 'selected' : 'bg-white dark:bg-surface-dark'}"
+                    onclick="${day.available ? `selectCalendarDate('${day.date}')` : ''}"
+                    ${!day.available ? 'disabled' : ''}
+                >
+                    <span class="text-xs font-medium ${selectedDate === day.date ? 'text-white' : 'text-gray-500 dark:text-gray-400'} mb-1">
+                        ${day.weekday}
+                    </span>
+                    <span class="text-lg font-bold ${selectedDate === day.date ? 'text-white' : 'text-gray-900 dark:text-white'}">
+                        ${day.day}
+                    </span>
+                </button>
+            `).join('');
+        }
+        
+        function selectCalendarDate(date) {
+            selectedDate = date;
+            selectedTime = null;
+            dateInput.value = date;
+            updateTimeSlots(date);
+            updateSummary();
+            updateCalendarSelection();
+        }
+        
+        function updateCalendarSelection() {
+            // Update calendar strip selection
+            document.querySelectorAll('.calendar-day').forEach(day => {
+                day.classList.remove('selected');
+                if (day.getAttribute('onclick')?.includes(selectedDate)) {
+                    day.classList.add('selected');
+                }
+            });
+        }
+        
+        function updateTimeSlots(date) {
+            if (!selectedService || !selectedService.timeSlots[date]) {
+                timeSlotsContainer.innerHTML = '';
+                noTimesMessage.classList.remove('hidden');
+                return;
+            }
+            
+            noTimesMessage.classList.add('hidden');
+            
+            const slots = selectedService.timeSlots[date];
+            timeSlotsContainer.innerHTML = slots.map(slot => `
+                <button 
+                    type="button"
+                    class="time-slot py-3 px-2 rounded-lg border ${selectedTime === slot ? 'selected' : 'available border-gray-200 dark:border-white/10 bg-white dark:bg-surface-dark'}"
+                    onclick="selectTimeSlot('${slot}')"
+                >
+                    <span class="text-sm font-medium">${slot}</span>
+                </button>
+            `).join('');
+        }
+        
+        function selectTimeSlot(time) {
+            selectedTime = time;
+            updateSummary();
+            
+            // Update UI
+            document.querySelectorAll('.time-slot').forEach(slot => {
+                slot.classList.remove('selected');
+                if (slot.textContent.includes(time)) {
+                    slot.classList.add('selected');
+                }
+            });
+        }
+        
+        function calculateTotal() {
+            if (!selectedService) return 0;
+            
+            const servicePrice = selectedService.price;
+            const travelFee = selectedService.type === 'home' ? 25.00 : 0;
+            const platformFee = servicePrice * 0.10;
+            
+            return servicePrice + travelFee + platformFee;
+        }
+        
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.classList.remove('hidden');
+            successMessage.classList.add('hidden');
+        }
+        
+        function showSuccess(message) {
+            successMessage.textContent = message;
+            successMessage.classList.remove('hidden');
+            errorMessage.classList.add('hidden');
+        }
+        
+        // Make functions available globally
+        window.selectCalendarDate = selectCalendarDate;
+        window.selectTimeSlot = selectTimeSlot;
+    </script>
+</body>
+</html>

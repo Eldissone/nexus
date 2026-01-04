@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthConnect - Plataforma de Saúde</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- Tailwind Configuration -->
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13ec5b",
+                        "primary-dark": "#11d852",
+                        "background-light": "#f6f8f6",
+                        "background-dark": "#102216",
+                        "surface-dark": "#1A2E22",
+                        "surface-light": "#ffffff",
+                        "text-dark": "#1a2e22",
+                        "text-light": "#f6f8f6"
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.75rem",
+                        "lg": "1rem",
+                        "xl": "1.25rem",
+                        "2xl": "1.5rem"
+                    }
+                },
+            },
+        }
+    </script>
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Lexend', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(19, 236, 91, 0.15);
+        }
+
+        .provider-card:hover {
+            transform: scale(1.03);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #13ec5b 0%, #0bc44a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(19, 236, 91, 0.3), transparent);
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark text-text-dark dark:text-text-light font-display overflow-x-hidden">
+    <!-- Navigation Bar -->
+    <nav
+        class="fixed top-0 left-0 right-0 z-50 bg-white/90 dark:bg-background-dark/90 backdrop-blur-md border-b border-gray-200/10 dark:border-white/5">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center gap-3">
+                    <div class=" p-0 rounded-full">
+                        <span class="material-symbols-outlined text-primary text-4xl">local_hospital</span>
+                    </div>
+                    <span class="text-xl font-bold tracking-tight text-text-dark dark:text-white">HealthConnect</span>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="#services"
+                        class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary font-medium transition-colors">
+                        Serviços
+                    </a>
+                    <a href="#providers"
+                        class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary font-medium transition-colors">
+                        Prestadores
+                    </a>
+                    <a href="#how-it-works"
+                        class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary font-medium transition-colors">
+                        Como Funciona
+                    </a>
+                    <a href="./src/pages/login.html"
+                        class="px-5 py-2 text-gray-700 dark:text-gray-300 font-medium hover:text-primary dark:hover:text-primary transition-colors">
+                        Entrar
+                    </a>
+                    <a href="./src/pages/register.html"
+                        class="px-5 py-2 bg-primary hover:bg-primary-dark text-background-dark font-semibold rounded-xl transition-all active:scale-95">
+                        Cadastrar
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-button" class="md:hidden text-gray-600 dark:text-gray-300">
+                    <span class="material-symbols-outlined text-2xl">menu</span>
+                </button>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="md:hidden hidden py-4 border-t border-gray-200/10 dark:border-white/5">
+                <div class="flex flex-col gap-4">
+                    <a href="#services"
+                        class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary font-medium py-2 transition-colors">
+                        Serviços
+                    </a>
+                    <a href="#providers"
+                        class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary font-medium py-2 transition-colors">
+                        Prestadores
+                    </a>
+                    <a href="#how-it-works"
+                        class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary font-medium py-2 transition-colors">
+                        Como Funciona
+                    </a>
+                    <div class="pt-2 space-y-3">
+                        <a href="/login.html"
+                            class="block text-center px-4 py-3 text-gray-700 dark:text-gray-300 font-medium hover:text-primary dark:hover:text-primary transition-colors">
+                            Entrar
+                        </a>
+                        <a href="/register.html"
+                            class="block text-center px-4 py-3 bg-primary hover:bg-primary-dark text-background-dark font-semibold rounded-xl transition-all active:scale-95">
+                            Cadastrar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+        <div class="container mx-auto max-w-6xl">
+            <!-- Background Decoration -->
+            <div class="absolute inset-0 -z-10">
+                <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl"></div>
+                <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl"></div>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <!-- Hero Text -->
+                <div>
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6">
+                        Cuidados de Saúde
+                        <span class="gradient-text">ao Seu Alcance</span>
+                    </h1>
+                    <p class="text-lg sm:text-xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
+                        Conecte-se com profissionais de saúde qualificados quando você mais precisa.
+                        Atendimento rápido, seguro e monitorado em tempo real.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="#services"
+                            class="px-8 py-4 bg-primary hover:bg-primary-dark text-background-dark font-semibold rounded-xl text-lg transition-all active:scale-95 shadow-lg shadow-primary/25 flex items-center justify-center gap-2">
+                            <span>Buscar Serviços</span>
+                            <span class="material-symbols-outlined">arrow_forward</span>
+                        </a>
+                        <a href="#how-it-works"
+                            class="px-8 py-4 bg-transparent border-2 border-primary text-primary hover:bg-primary/10 font-semibold rounded-xl text-lg transition-all active:scale-95 flex items-center justify-center gap-2">
+                            <span>Como Funciona</span>
+                            <span class="material-symbols-outlined">play_circle</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Hero Image -->
+                <div class="relative">
+                    <div class="rounded-3xl overflow-hidden shadow-2xl shadow-black/20">
+                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCdJTCp7JVOVpdUpKnxH6aNk5IB8SWIQcxK29HZsAflVh_Z_AY0oU0oyxCE9ytaw8algJbeN7ZVO6MW38CBkGMue3Q2d0YON-GM9Smu9QXGj-2pAsP2n5O0Slh3oyltd1Mg4tKclGjELqWHRMbEabvmZyJkTSPzBxMV5CrxyVLGk-JqfkXCeJEMeyYyIFYGPzW8y1GdwLu5b-b269pg-Ho0eTJiARmfQBS5bRpylCpXV308kMgbaTPZuxhHmbREMOCDzlZCVN0SMSZm"
+                            alt="Profissional de saúde usando tecnologia digital" class="w-full h-[400px] object-cover">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-background-dark/60 via-transparent to-transparent">
+                        </div>
+                    </div>
+
+                    <!-- Stats Cards -->
+                    <div class="absolute -bottom-6 left-6 right-6 grid grid-cols-3 gap-4">
+                        <div class="bg-white dark:bg-surface-dark rounded-xl p-4 shadow-lg">
+                            <div class="text-2xl font-bold text-primary">500+</div>
+                            <div class="text-sm text-gray-600 dark:text-gray-300">Profissionais</div>
+                        </div>
+                        <div class="bg-white dark:bg-surface-dark rounded-xl p-4 shadow-lg">
+                            <div class="text-2xl font-bold text-primary">24h</div>
+                            <div class="text-sm text-gray-600 dark:text-gray-300">Atendimento</div>
+                        </div>
+                        <div class="bg-white dark:bg-surface-dark rounded-xl p-4 shadow-lg">
+                            <div class="text-2xl font-bold text-primary">4.9</div>
+                            <div class="text-sm text-gray-600 dark:text-gray-300">Avaliação</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Grid Section -->
+    <section id="services" class="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50/50 dark:bg-background-dark/50">
+        <div class="container mx-auto max-w-6xl">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-4">Serviços Disponíveis</h2>
+                <p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+                    Oferecemos uma ampla gama de serviços de saúde com profissionais qualificados
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="services-container">
+                <!-- Services will be loaded via JS -->
+                <div class="text-center py-8">
+                    <div class="animate-pulse">
+                        <div class="bg-gray-200 dark:bg-surface-dark rounded-xl h-64 mb-4"></div>
+                        <div class="h-4 bg-gray-200 dark:bg-surface-dark rounded mb-2 mx-4"></div>
+                        <div class="h-4 bg-gray-200 dark:bg-surface-dark rounded mb-2 mx-8"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="py-20 px-4 sm:px-6 lg:px-8">
+        <div class="container mx-auto max-w-6xl">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-4">Como Funciona</h2>
+                <p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+                    Em poucos passos, você tem acesso a cuidados de saúde de qualidade
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Step 1 -->
+                <div class="bg-white dark:bg-surface-dark rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow">
+                    <div class="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-6">
+                        <span class="material-symbols-outlined text-primary text-2xl">search</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">1. Encontre um Serviço</h3>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        Busque por especialidade, localização ou tipo de atendimento. Filtre por disponibilidade e
+                        avaliações.
+                    </p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="bg-white dark:bg-surface-dark rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow">
+                    <div class="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-6">
+                        <span class="material-symbols-outlined text-primary text-2xl">schedule</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">2. Agende Online</h3>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        Escolha data, horário e local. Confirme o agendamento em poucos cliques. Pagamento seguro e
+                        simplificado.
+                    </p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="bg-white dark:bg-surface-dark rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow">
+                    <div class="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-6">
+                        <span class="material-symbols-outlined text-primary text-2xl">monitor_heart</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">3. Acompanhe em Tempo Real</h3>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        Monitore o deslocamento do profissional, receba notificações e tenha suporte durante todo o
+                        atendimento.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Providers Section -->
+    <section id="providers" class="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50/50 dark:bg-background-dark/50">
+        <div class="container mx-auto max-w-6xl">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-4">Prestadores em Destaque</h2>
+                <p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+                    Profissionais verificados e altamente qualificados para seu cuidado
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="providers-container">
+                <!-- Providers will be loaded via JS -->
+                <div class="text-center py-8">
+                    <div class="animate-pulse">
+                        <div class="rounded-full bg-gray-200 dark:bg-surface-dark w-24 h-24 mx-auto mb-4"></div>
+                        <div class="h-4 bg-gray-200 dark:bg-surface-dark rounded mb-2 mx-8"></div>
+                        <div class="h-3 bg-gray-200 dark:bg-surface-dark rounded mb-2 mx-12"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-12">
+                <a href="/register.html"
+                    class="inline-flex items-center gap-2 px-8 py-4 bg-transparent border-2 border-primary text-primary hover:bg-primary/10 font-semibold rounded-xl text-lg transition-all active:scale-95">
+                    <span>Ver Todos os Prestadores</span>
+                    <span class="material-symbols-outlined">arrow_forward</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-primary/10 to-primary/5">
+        <div class="container mx-auto max-w-4xl text-center">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-6">Pronto para Começar?</h2>
+            <p class="text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
+                Junte-se a milhares de pessoas que já transformaram sua experiência com cuidados de saúde
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="/register.html"
+                    class="px-8 py-4 bg-primary hover:bg-primary-dark text-background-dark font-semibold rounded-xl text-lg transition-all active:scale-95 shadow-lg shadow-primary/25">
+                    Criar Conta Grátis
+                </a>
+                <a href="/login.html"
+                    class="px-8 py-4 bg-white dark:bg-surface-dark hover:bg-gray-100 dark:hover:bg-surface-dark/80 text-gray-800 dark:text-gray-300 font-semibold rounded-xl text-lg transition-all active:scale-95">
+                    Fazer Login
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-4 sm:px-6 lg:px-8 bg-background-dark text-white">
+        <div class="container mx-auto max-w-6xl">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center gap-2 mb-6">
+                        <div class="bg-primary/10 p-2 rounded-full">
+                            <span class="material-symbols-outlined text-primary text-2xl">local_hospital</span>
+                        </div>
+                        <span class="text-xl font-bold">HealthConnect</span>
+                    </div>
+                    <p class="text-gray-400 text-sm">
+                        Conectando cuidados de saúde com confiança e tecnologia.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="font-bold mb-4">Serviços</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-primary transition-colors">Consultas</a></li>
+                        <li><a href="#" class="hover:text-primary transition-colors">Emergência</a></li>
+                        <li><a href="#" class="hover:text-primary transition-colors">Exames</a></li>
+                        <li><a href="#" class="hover:text-primary transition-colors">Home Care</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-bold mb-4">Empresa</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-primary transition-colors">Sobre</a></li>
+                        <li><a href="#" class="hover:text-primary transition-colors">Carreiras</a></li>
+                        <li><a href="#" class="hover:text-primary transition-colors">Blog</a></li>
+                        <li><a href="#" class="hover:text-primary transition-colors">Contato</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-bold mb-4">Legal</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-primary transition-colors">Termos de Uso</a></li>
+                        <li><a href="#" class="hover:text-primary transition-colors">Privacidade</a></li>
+                        <li><a href="#" class="hover:text-primary transition-colors">Cookies</a></li>
+                        <li><a href="#" class="hover:text-primary transition-colors">FAQ</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section-divider my-8"></div>
+
+            <div class="flex flex-col md:flex-row justify-between items-center text-gray-400 text-sm">
+                <p>© 2024 HealthConnect. Todos os direitos reservados.</p>
+                <div class="flex gap-4 mt-4 md:mt-0">
+                    <!-- WhatsApp -->
+                    <button data-platform="whatsapp"
+                        class="w-12 h-12 bg-green-500 text-white rounded-full hover:bg-green-600 transition flex items-center justify-center text-xl">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </button>
+
+                    <!-- LinkedIn -->
+                    <button data-platform="linkedin"
+                        class="w-12 h-12 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition flex items-center justify-center text-xl">
+                        <i class="fa-brands fa-linkedin-in"></i>
+                    </button>
+
+                    <!-- Twitter / X -->
+                    <button data-platform="twitter"
+                        class="w-12 h-12 bg-black text-white rounded-full hover:bg-neutral-800 transition flex items-center justify-center text-xl">
+                        <i class="fa-brands fa-x-twitter"></i>
+                    </button>
+
+                    <!-- Facebook -->
+                    <button data-platform="facebook"
+                        class="w-12 h-12 bg-blue-800 text-white rounded-full hover:bg-blue-900 transition flex items-center justify-center text-xl">
+                        <i class="fa-brands fa-facebook-f"></i>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script type="module">
+        // Mobile Menu Toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (event) => {
+            if (!mobileMenu.contains(event.target) && !mobileMenuButton.contains(event.target)) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                if (this.getAttribute('href') !== '#') {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                        // Close mobile menu if open
+                        mobileMenu.classList.add('hidden');
+                    }
+                }
+            });
+        });
+
+        // Load services and providers dynamically
+        async function loadServices() {
+            const servicesContainer = document.getElementById('services-container');
+            const providersContainer = document.getElementById('providers-container');
+
+            // Mock data - replace with API calls
+            const mockServices = [
+                {
+                    id: 1,
+                    title: "Consulta Médica Geral",
+                    description: "Atendimento clínico completo com diagnóstico e prescrição",
+                    icon: "stethoscope",
+                    category: "Consultas",
+                    price: "150,00"
+                },
+                {
+                    id: 2,
+                    title: "Enfermagem Domiciliar",
+                    description: "Cuidados especializados no conforto da sua casa",
+                    icon: "medical_services",
+                    category: "Home Care",
+                    price: "100,00"
+                },
+                {
+                    id: 3,
+                    title: "Fisioterapia",
+                    description: "Reabilitação e tratamentos fisioterapêuticos",
+                    icon: "fitness_center",
+                    category: "Reabilitação",
+                    price: "120,00"
+                }
+            ];
+
+            const mockProviders = [
+                {
+                    id: 1,
+                    name: "Dr. Carlos Silva",
+                    specialty: "Clínico Geral",
+                    rating: 4.9,
+                    image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=200&h=200&fit=crop&crop=face"
+                },
+                {
+                    id: 2,
+                    name: "Dra. Ana Santos",
+                    specialty: "Enfermeira",
+                    rating: 4.8,
+                    image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=200&h=200&fit=crop&crop=face"
+                },
+                {
+                    id: 3,
+                    name: "Dr. Marcos Lima",
+                    specialty: "Fisioterapeuta",
+                    rating: 4.7,
+                    image: "https://images.unsplash.com/photo-1537368910025-700350fe46c7?w-200&h=200&fit=crop&crop=face"
+                },
+                {
+                    id: 4,
+                    name: "Dra. Juliana Costa",
+                    specialty: "Pediatra",
+                    rating: 4.9,
+                    image: "https://images.unsplash.com/photo-1594824434340-7e7dfc37cabb?w=200&h=200&fit=crop&crop=face"
+                }
+            ];
+
+            // Render services
+            servicesContainer.innerHTML = mockServices.map(service => `
+                <div class="service-card bg-white dark:bg-surface-dark rounded-2xl p-6 shadow-lg transition-all duration-300 cursor-pointer hover:shadow-xl border border-gray-100 dark:border-white/5">
+                    <div class="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mb-6">
+                        <span class="material-symbols-outlined text-primary text-3xl">${service.icon}</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">${service.title}</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">${service.description}</p>
+                    <div class="flex items-center justify-between mt-6">
+                        <span class="text-sm font-medium px-3 py-1 bg-gray-100 dark:bg-white/5 rounded-full">
+                            ${service.category}
+                        </span>
+                      
+                    </div>
+                </div>
+            `).join('');
+
+            // Render providers
+            providersContainer.innerHTML = mockProviders.map(provider => `
+                <div class="provider-card bg-white dark:bg-surface-dark rounded-2xl p-6 text-center shadow-lg transition-all duration-300 hover:shadow-xl border border-gray-100 dark:border-white/5">
+                    <div class="relative inline-block mb-4">
+                        <img src="${provider.image}" alt="${provider.name}" class="w-24 h-24 rounded-full object-cover mx-auto">
+                        <div class="absolute bottom-0 right-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded-full">
+                            ★ ${provider.rating}
+                        </div>
+                    </div>
+                    <h3 class="font-bold text-lg mb-1">${provider.name}</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">${provider.specialty}</p>
+                    <button class="w-full py-3 bg-primary/10 hover:bg-primary/20 text-primary font-semibold rounded-xl transition-colors">
+                        Ver Perfil
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', loadServices);
+    </script>
+</body>
+
+</html>

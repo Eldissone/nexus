@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html class="dark" lang="pt-BR">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Tela de Avaliações</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13ec5b",
+                        "background-light": "#f6f8f6",
+                        "background-dark": "#102216",
+                        "surface-dark": "#1A2E22",
+                        "surface-light": "#23482f",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px" },
+                    spacing: {
+                        "safe-top": "env(safe-area-inset-top)",
+                        "safe-bottom": "env(safe-area-inset-bottom)",
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        body {
+            min-height: 100vh;
+            min-height: 100dvh;
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark font-display text-gray-900 dark:text-gray-100 min-h-screen flex flex-col overflow-x-hidden pb-safe-bottom">
+    <div class="sticky top-0 z-50 bg-background-dark/95 backdrop-blur-sm border-b border-white/5 pt-safe-top">
+        <div class="flex items-center justify-between p-4">
+            <button
+                class="flex items-center justify-center rounded-full w-10 h-10 hover:bg-white/10 text-white transition-colors">
+                <span class="material-symbols-outlined" style="font-size: 24px;">arrow_back</span>
+            </button>
+            <h2 class="text-white text-lg font-bold leading-tight tracking-tight">Avaliar Atendimento</h2>
+            <div class="w-10"></div>
+        </div>
+    </div>
+    <div class="flex-1 flex flex-col w-full max-w-md mx-auto p-4 pb-8">
+        <div class="flex flex-col items-center justify-center mt-2 mb-8">
+            <div class="relative w-24 h-24 mb-4">
+                <div class="w-full h-full rounded-full overflow-hidden border-4 border-surface-light shadow-xl">
+                    <img alt="Dra. Julia Santos" class="h-full w-full object-cover"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCeIpDB2R15Pqwy2aPC7OhG77a9HEALXshWLkqh5iiBY2HMAwjXkMUc9M6XGseJ0CmRhWjRwgVuXuByZFyG4X0I3MhIpFuvbGjbik_QRI-tPGQ-UKkQSMSeuJyqHWVlNMQik7AyJFEdh8K-F_9bxm7Kzn16Try0UFOglx96X-RLwFm-0fbpibbS4MIleiITXSu85olmw1ZmuYtTUuCFwyk99FCQ62bEG64lfQzRXPFFgoFh5clQsiLHdNyFax3mMPYmZnm2Ybp8NYcQ" />
+                </div>
+                <div
+                    class="absolute bottom-0 right-0 bg-primary rounded-full p-1.5 border-4 border-background-dark text-background-dark shadow-lg">
+                    <span class="material-symbols-outlined block text-[16px] font-bold">check</span>
+                </div>
+            </div>
+            <h3 class="text-white text-xl font-bold">Dra. Julia Santos</h3>
+            <p class="text-[#92c9a4] font-medium">Nutricionista</p>
+            <p class="text-gray-500 text-xs mt-1">Consulta realizada em 10 de Setembro</p>
+        </div>
+        <div class="bg-surface-dark rounded-2xl p-6 border border-white/5 shadow-lg mb-6 text-center">
+            <p class="text-white font-semibold mb-4 text-lg">Como foi sua experiência?</p>
+            <div class="flex items-center justify-center gap-2 mb-2">
+                <button class="text-primary hover:scale-110 transition-transform focus:outline-none">
+                    <span class="material-symbols-outlined fill-current"
+                        style="font-variation-settings: 'FILL' 1; font-size: 36px;">star</span>
+                </button>
+                <button class="text-primary hover:scale-110 transition-transform focus:outline-none">
+                    <span class="material-symbols-outlined fill-current"
+                        style="font-variation-settings: 'FILL' 1; font-size: 36px;">star</span>
+                </button>
+                <button class="text-primary hover:scale-110 transition-transform focus:outline-none">
+                    <span class="material-symbols-outlined fill-current"
+                        style="font-variation-settings: 'FILL' 1; font-size: 36px;">star</span>
+                </button>
+                <button class="text-primary hover:scale-110 transition-transform focus:outline-none">
+                    <span class="material-symbols-outlined fill-current"
+                        style="font-variation-settings: 'FILL' 1; font-size: 36px;">star</span>
+                </button>
+                <button class="text-gray-600 hover:text-primary transition-colors hover:scale-110 focus:outline-none">
+                    <span class="material-symbols-outlined" style="font-size: 36px;">star</span>
+                </button>
+            </div>
+            <p class="text-[#92c9a4] text-sm font-medium mt-2">Muito Bom</p>
+        </div>
+        <div class="mb-6">
+            <label class="block text-sm text-gray-400 font-medium mb-3 uppercase tracking-wider">Pontos
+                Positivos</label>
+            <div class="flex flex-wrap gap-2">
+                <button
+                    class="px-4 py-2 rounded-full bg-primary/20 border border-primary text-primary text-sm font-semibold transition-colors">
+                    Pontualidade
+                </button>
+                <button
+                    class="px-4 py-2 rounded-full bg-surface-light border border-white/5 text-gray-300 hover:bg-white/5 text-sm font-medium transition-colors">
+                    Atenciosa
+                </button>
+                <button
+                    class="px-4 py-2 rounded-full bg-surface-light border border-white/5 text-gray-300 hover:bg-white/5 text-sm font-medium transition-colors">
+                    Clareza
+                </button>
+                <button
+                    class="px-4 py-2 rounded-full bg-surface-light border border-white/5 text-gray-300 hover:bg-white/5 text-sm font-medium transition-colors">
+                    Consultório
+                </button>
+                <button
+                    class="px-4 py-2 rounded-full bg-surface-light border border-white/5 text-gray-300 hover:bg-white/5 text-sm font-medium transition-colors">
+                    Empatia
+                </button>
+            </div>
+        </div>
+        <div class="mb-8">
+            <label class="block text-sm text-gray-400 font-medium mb-3 uppercase tracking-wider" for="comment">Deixe um
+                comentário</label>
+            <div class="relative">
+                <textarea
+                    class="w-full bg-surface-light border border-transparent rounded-xl p-4 text-white placeholder-gray-500 focus:border-primary/50 focus:ring-0 transition-colors resize-none"
+                    id="comment" placeholder="Conte mais detalhes sobre o atendimento... (Opcional)"
+                    rows="4"></textarea>
+                <div class="absolute bottom-3 right-3 text-xs text-gray-500 font-medium">
+                    0/300
+                </div>
+            </div>
+        </div>
+        <button
+            class="w-full bg-primary hover:brightness-110 text-background-dark font-bold text-base py-4 rounded-xl shadow-[0_0_20px_rgba(19,236,91,0.3)] transition-all active:scale-[0.98] mb-8">
+            Enviar Avaliação
+        </button>
+        <div class="border-t border-white/10 pt-6">
+            <div class="flex items-center justify-between mb-4 cursor-pointer group">
+                <div>
+                    <h4 class="text-white font-bold text-base">Avaliações Recentes</h4>
+                    <div class="flex items-center gap-1.5 mt-1">
+                        <span class="material-symbols-outlined text-primary text-sm"
+                            style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="text-white font-bold text-sm">4.9</span>
+                        <span class="text-gray-500 text-xs">• Baseado em 124 avaliações</span>
+                    </div>
+                </div>
+                <button
+                    class="w-8 h-8 rounded-full bg-surface-light flex items-center justify-center group-hover:bg-white/10 transition-colors">
+                    <span class="material-symbols-outlined text-[#92c9a4]">chevron_right</span>
+                </button>
+            </div>
+            <div class="bg-surface-dark/50 rounded-xl p-4 border border-white/5">
+                <div class="flex items-center justify-between mb-2">
+                    <div class="flex items-center gap-2">
+                        <div class="w-6 h-6 rounded-full bg-gray-700 overflow-hidden">
+                            <img alt="User" class="w-full h-full object-cover opacity-80"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4P-JvRQPsaULC3dRLMzPRLVjMx20ann1gLWTtHBNxY3zOikMMtaur1hTYoFeZT_lcme4Ez3DEGtbYCSi3RiPj6C29c0yCH35NeroqvQSLfrDXPxRqYcV2xIJbv4K3kVeb6S_yMfCJohiVMO-g6QyEDBh5So9eliBS6IRmJSjPE42m6HjiFH4xKvZokGt6dYk_fwJQ9N_XecqnBTikfqRWXjG1J6v1q898w6G_ZrJ5gVJEHmO7ixRTHaf28KS9UoHLUfZ4-BJSXpdN" />
+                        </div>
+                        <span class="text-gray-300 text-sm font-medium">Roberto M.</span>
+                    </div>
+                    <span class="text-gray-600 text-xs">2 dias atrás</span>
+                </div>
+                <div class="flex gap-0.5 mb-2">
+                    <span class="material-symbols-outlined text-primary text-[14px]"
+                        style="font-variation-settings: 'FILL' 1;">star</span>
+                    <span class="material-symbols-outlined text-primary text-[14px]"
+                        style="font-variation-settings: 'FILL' 1;">star</span>
+                    <span class="material-symbols-outlined text-primary text-[14px]"
+                        style="font-variation-settings: 'FILL' 1;">star</span>
+                    <span class="material-symbols-outlined text-primary text-[14px]"
+                        style="font-variation-settings: 'FILL' 1;">star</span>
+                    <span class="material-symbols-outlined text-primary text-[14px]"
+                        style="font-variation-settings: 'FILL' 1;">star</span>
+                </div>
+                <p class="text-gray-400 text-sm leading-relaxed">
+                    "Excelente profissional! Explicou tudo com muita clareza e paciência. Recomendo fortemente."
+                </p>
+                <button class="mt-3 text-[#92c9a4] text-xs font-bold hover:underline">Ver todas as avaliações</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

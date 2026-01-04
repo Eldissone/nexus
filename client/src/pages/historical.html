@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Histórico de Agendamentos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13ec5b",
+                        "background-light": "#f6f8f6",
+                        "background-dark": "#102216",
+                        "surface-dark": "#1A2E22",
+                        "surface-light": "#23482f",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style>
+        /* Custom scrollbar hiding for clean UI */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark font-display text-gray-900 dark:text-gray-100 min-h-screen flex flex-col overflow-x-hidden">
+    <!-- Top App Bar -->
+    <div class="sticky top-0 z-50 bg-background-dark/95 backdrop-blur-sm border-b border-white/5 pt-safe-top">
+        <div class="flex items-center justify-between p-4">
+            <h2 class="text-white text-xl font-bold leading-tight tracking-tight flex-1">Meus Agendamentos</h2>
+            <div class="flex items-center justify-end gap-3">
+                <button
+                    class="flex items-center justify-center rounded-full w-10 h-10 bg-surface-light hover:bg-white/10 text-white transition-colors">
+                    <span class="material-symbols-outlined" style="font-size: 24px;">notifications</span>
+                </button>
+            </div>
+        </div>
+        <!-- Segmented Buttons -->
+        <div class="px-4 pb-4">
+            <div class="flex h-12 w-full items-center justify-center rounded-xl bg-surface-light p-1">
+                <label
+                    class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-primary has-[:checked]:text-background-dark text-[#92c9a4] transition-all duration-200">
+                    <span class="text-sm font-semibold leading-normal">Agendados</span>
+                    <input checked="" class="invisible w-0 absolute" name="view-toggle" type="radio"
+                        value="Agendados" />
+                </label>
+                <label
+                    class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-primary has-[:checked]:text-background-dark text-[#92c9a4] transition-all duration-200">
+                    <span class="text-sm font-semibold leading-normal">Histórico</span>
+                    <input class="invisible w-0 absolute" name="view-toggle" type="radio" value="Histórico" />
+                </label>
+            </div>
+        </div>
+    </div>
+    <!-- Scrollable Content Container -->
+    <div class="flex-1 flex flex-col w-full max-w-md mx-auto">
+        <!-- Search & Filters -->
+        <div class="flex flex-col gap-4 px-4 py-4">
+            <!-- Search Bar -->
+            <label class="flex flex-col h-12 w-full">
+                <div
+                    class="flex w-full flex-1 items-stretch rounded-xl h-full bg-surface-light border border-transparent focus-within:border-primary/50 transition-colors">
+                    <div class="text-[#92c9a4] flex items-center justify-center pl-4 pr-2">
+                        <span class="material-symbols-outlined">search</span>
+                    </div>
+                    <input
+                        class="flex w-full min-w-0 flex-1 bg-transparent text-white focus:outline-0 placeholder:text-[#92c9a4]/70 px-0 text-base font-normal leading-normal"
+                        placeholder="Buscar médico ou especialidade" value="" />
+                    <div
+                        class="text-[#92c9a4] flex items-center justify-center px-4 cursor-pointer hover:text-white transition-colors">
+                        <span class="material-symbols-outlined">tune</span>
+                    </div>
+                </div>
+            </label>
+            <!-- Filter Chips -->
+            <div class="flex gap-2 overflow-x-auto no-scrollbar pb-2">
+                <button
+                    class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-primary px-5 transition-transform active:scale-95">
+                    <p class="text-background-dark text-sm font-bold">Todos</p>
+                </button>
+                <button
+                    class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-surface-light border border-white/10 px-5 hover:bg-white/10 transition-colors">
+                    <p class="text-white text-sm font-medium">Consulta</p>
+                </button>
+                <button
+                    class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-surface-light border border-white/10 px-5 hover:bg-white/10 transition-colors">
+                    <p class="text-white text-sm font-medium">Exames</p>
+                </button>
+                <button
+                    class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-surface-light border border-white/10 px-5 hover:bg-white/10 transition-colors">
+                    <p class="text-white text-sm font-medium">Domiciliar</p>
+                </button>
+            </div>
+        </div>
+        <!-- Appointments List -->
+        <div class="flex flex-col gap-5 px-4 pb-24">
+            <!-- Section Title -->
+            <div class="flex items-center justify-between mt-2">
+                <h3 class="text-white text-lg font-bold">Próximos</h3>
+                <span class="text-primary text-sm font-medium cursor-pointer">Ver calendário</span>
+            </div>
+            <!-- Card 1: Today -->
+            <div
+                class="group relative flex flex-col gap-4 rounded-2xl bg-surface-dark p-4 shadow-lg border border-white/5 hover:border-primary/30 transition-all duration-300">
+                <div class="flex items-start justify-between">
+                    <div class="flex gap-4">
+                        <div
+                            class="relative h-14 w-14 shrink-0 overflow-hidden rounded-full border-2 border-surface-light">
+                            <img alt="Dr. Ana Silva" class="h-full w-full object-cover"
+                                data-alt="Female doctor smiling portrait"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBdIdS-t8s7vAeKRvbPCLVwsIW7s3CQIlxMVfcKp1u-dGoAEnhmdU1uQCTKwjahBkwYEW7W1DnCul68t8HKbIjj7ilKrpJ9iGPp6iLVIRg817UPKWigjMz9xnc1TnhUJHtPkhTzRXQlGjv1bOO1xy6na6DQ5lfPobe-zSaXyqfI0YOvKY3vKX9XUjk3kbiWQJcJhvFhinsRySpChE_Py5Z749rXzDgdyMLoNQn7GKe0b8UFLSvuHOBU9P_EAzSdilt2UzmYWt19wrm_" />
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <h4 class="text-white text-base font-bold leading-tight">Enfermagem Domiciliar</h4>
+                            <p class="text-[#92c9a4] text-sm font-medium">Dra. Ana Silva</p>
+                            <div class="flex items-center gap-1 text-xs text-gray-400 mt-0.5">
+                                <span class="material-symbols-outlined text-[14px]">location_on</span>
+                                <span class="truncate max-w-[150px]">Residência (Cadastrada)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="rounded-full bg-primary/10 px-2.5 py-1 backdrop-blur-md">
+                        <p class="text-primary text-xs font-bold uppercase tracking-wide">Confirmado</p>
+                    </div>
+                </div>
+                <div class="h-px w-full bg-white/10"></div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2 text-white">
+                        <div
+                            class="flex items-center justify-center w-8 h-8 rounded-full bg-surface-light text-primary">
+                            <span class="material-symbols-outlined text-[18px]">calendar_today</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-xs text-[#92c9a4] font-medium">Data e Horário</span>
+                            <span class="text-sm font-bold">Hoje, 14:00</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3 mt-1">
+                    <button
+                        class="flex items-center justify-center h-10 rounded-lg bg-surface-light text-white text-sm font-semibold hover:bg-white/10 transition-colors">
+                        Reagendar
+                    </button>
+                    <button
+                        class="flex items-center justify-center h-10 rounded-lg bg-primary text-background-dark text-sm font-bold hover:brightness-110 transition-all shadow-[0_0_15px_rgba(19,236,91,0.2)]">
+                        Ver Detalhes
+                    </button>
+                </div>
+            </div>
+            <!-- Card 2: Upcoming -->
+            <div
+                class="group relative flex flex-col gap-4 rounded-2xl bg-surface-dark p-4 shadow-lg border border-white/5 hover:border-primary/30 transition-all duration-300">
+                <div class="flex items-start justify-between">
+                    <div class="flex gap-4">
+                        <div
+                            class="relative h-14 w-14 shrink-0 overflow-hidden rounded-full border-2 border-surface-light">
+                            <img alt="Dr. Carlos Mendes" class="h-full w-full object-cover"
+                                data-alt="Male doctor serious portrait"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsZjJJA4Xq_ydwAufQDuKJMHQGzsT2bYfLKiHoDJR8ao4rfz_kHSE4ENSe3UKXQ90Bv4ID2unzTsYkKRk6U6oOhCrCJawlf3TsQFpYHzQJWP2DJJNjnrQPrCOkSkMRlT9uaiirB7rjGRw30yxtIaQztiYrcrN50X_dN00ngc3smOOtQJo-olqkAoG8a7mSayJxQzfJlOIXtvegYzI567H_J-v2XyyKudQbxAuzNM6ecrCRkwohyskTFVp46c3HJ9Nx6I9jjOSlcMaw" />
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <h4 class="text-white text-base font-bold leading-tight">Cardiologista</h4>
+                            <p class="text-[#92c9a4] text-sm font-medium">Dr. Carlos Mendes</p>
+                            <div class="flex items-center gap-1 text-xs text-gray-400 mt-0.5">
+                                <span class="material-symbols-outlined text-[14px]">videocam</span>
+                                <span>Telemedicina</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="rounded-full bg-blue-500/10 px-2.5 py-1 backdrop-blur-md">
+                        <p class="text-blue-400 text-xs font-bold uppercase tracking-wide">Aguardando</p>
+                    </div>
+                </div>
+                <div class="h-px w-full bg-white/10"></div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2 text-white">
+                        <div
+                            class="flex items-center justify-center w-8 h-8 rounded-full bg-surface-light text-[#92c9a4]">
+                            <span class="material-symbols-outlined text-[18px]">event</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-xs text-[#92c9a4] font-medium">Data e Horário</span>
+                            <span class="text-sm font-bold">28 Out, 09:30</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3 mt-1">
+                    <button
+                        class="flex items-center justify-center h-10 rounded-lg bg-surface-light text-white text-sm font-semibold hover:bg-white/10 transition-colors">
+                        Cancelar
+                    </button>
+                    <button
+                        class="flex items-center justify-center h-10 rounded-lg bg-surface-light border border-primary/30 text-primary text-sm font-bold hover:bg-primary/5 transition-all">
+                        Detalhes
+                    </button>
+                </div>
+            </div>
+            <!-- Section Title Past -->
+            <div class="flex items-center justify-between mt-4">
+                <h3 class="text-white/60 text-lg font-bold">Anteriores</h3>
+                <span class="text-[#92c9a4] text-sm font-medium cursor-pointer">Ver todos</span>
+            </div>
+            <!-- Card 3: Past (Completed) - Visual differentiation: More subdued -->
+            <div
+                class="group relative flex flex-col gap-3 rounded-2xl bg-surface-dark/60 p-4 border border-white/5 opacity-80 hover:opacity-100 transition-opacity">
+                <div class="flex items-start justify-between">
+                    <div class="flex gap-4">
+                        <div
+                            class="relative h-12 w-12 shrink-0 overflow-hidden rounded-full grayscale border border-surface-light">
+                            <img alt="Dra. Julia Santos" class="h-full w-full object-cover"
+                                data-alt="Female nutritionist smiling"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCeIpDB2R15Pqwy2aPC7OhG77a9HEALXshWLkqh5iiBY2HMAwjXkMUc9M6XGseJ0CmRhWjRwgVuXuByZFyG4X0I3MhIpFuvbGjbik_QRI-tPGQ-UKkQSMSeuJyqHWVlNMQik7AyJFEdh8K-F_9bxm7Kzn16Try0UFOglx96X-RLwFm-0fbpibbS4MIleiITXSu85olmw1ZmuYtTUuCFwyk99FCQ62bEG64lfQzRXPFFgoFh5clQsiLHdNyFax3mMPYmZnm2Ybp8NYcQ" />
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <h4 class="text-gray-200 text-base font-bold leading-tight">Nutricionista</h4>
+                            <p class="text-gray-500 text-sm font-medium">Dra. Julia Santos</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1 rounded-full bg-surface-light px-2.5 py-1">
+                        <span class="material-symbols-outlined text-[14px] text-gray-400">check_circle</span>
+                        <p class="text-gray-400 text-xs font-bold uppercase tracking-wide">Concluído</p>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between mt-1 pl-16">
+                    <span class="text-sm text-gray-500 font-medium">10 Set • Consulta Presencial</span>
+                    <button class="text-primary text-sm font-bold hover:underline">Avaliar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Floating Action Button for New Appointment -->
+    <div class="fixed bottom-6 right-6 z-40">
+        <button
+            class="group flex items-center justify-center w-14 h-14 rounded-full bg-primary text-background-dark shadow-[0_4px_20px_rgba(19,236,91,0.4)] hover:scale-105 active:scale-95 transition-all duration-300">
+            <span class="material-symbols-outlined" style="font-size: 28px;">add</span>
+            <span
+                class="absolute right-full mr-3 bg-surface-light text-white text-sm font-bold px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-lg border border-white/10">Novo
+                Agendamento</span>
+        </button>
+    </div>
+</body>
+
+</html>

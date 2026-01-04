@@ -1,0 +1,101 @@
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #f8f8f9;
+}
+
+.auth-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 500px;
+}
+
+.auth-card h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #17233d;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #515a6e;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #dcdee2;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #2d8cf0;
+    outline: none;
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 0.75rem;
+    background: #2d8cf0;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-submit:hover {
+    background: #5cadff;
+}
+
+.role-selector {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.role-btn {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid #dcdee2;
+    background: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.role-btn.active {
+    background: #2d8cf0;
+    color: white;
+    border-color: #2d8cf0;
+}
+
+.auth-link {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+}
+
+.auth-link a {
+    color: #2d8cf0;
+    text-decoration: none;
+}
+
+.auth-link a:hover {
+    text-decoration: underline;
+}
