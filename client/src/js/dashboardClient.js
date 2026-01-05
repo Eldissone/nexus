@@ -66,6 +66,9 @@ function updateDashboard() {
 
 function setupWebSocket() {
     // Conectar ao WebSocket
+    if (!socket.connected) {
+        try { socket.connect(); } catch {}
+    }
     socket.on('status-updated', (data) => {
         // Atualizar appointment específico
         const index = appointments.findIndex(a => a._id === data._id);

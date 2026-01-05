@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('user', JSON.stringify(data.user));
                 alert('Cadastro realizado com sucesso!');
-                window.location.href = selectedRole === 'provider' ? '/dashboard-provider.html' : '/dashboard-client.html';
+                window.location.href = selectedRole === 'provider' ? '/src/pages/dashboardprovider.html' : '/src/pages/dashboard.html';
             } else {
                 alert(data.message || 'Erro no cadastro');
             }

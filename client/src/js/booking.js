@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const serviceId = localStorage.getItem('selectedService');
     if (!serviceId) {
         alert('Nenhum serviço selecionado');
-        window.location.href = '/search.html';
+        window.location.href = '/src/pages/search.html';
         return;
     }
 
@@ -94,7 +94,7 @@ function setupEventListeners() {
             const token = localStorage.getItem('token');
             if (!token) {
                 alert('Você precisa estar logado para agendar');
-                window.location.href = '/login.html';
+                window.location.href = '/src/pages/login.html';
                 return;
             }
 
@@ -117,7 +117,7 @@ function setupEventListeners() {
             if (!res.ok) throw new Error('Erro ao criar agendamento');
             
             alert('Agendamento realizado com sucesso!');
-            window.location.href = '/dashboard.html';
+            window.location.href = '/src/pages/dashboard.html';
         } catch (error) {
             console.error('Erro:', error);
             alert('Falha ao agendar. Tente novamente.');

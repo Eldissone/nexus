@@ -43,14 +43,64 @@
 
 <body
     class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white antialiased selection:bg-primary selection:text-black pb-24">
+    <nav class="hidden md:block bg-white dark:bg-surface-dark border-b border-gray-100 dark:border-white/5">
+        <div class="container mx-auto px-6">
+            <div class="flex items-center justify-between h-16">
+                <a href="/index.html" class="flex items-center gap-2">
+                    <div class="bg-primary/10 p-2 rounded-lg">
+                        <span class="material-symbols-outlined text-primary text-xl">local_hospital</span>
+                    </div>
+                    <span class="text-lg font-bold text-text-dark dark:text-white">HealthConnect</span>
+                </a>
+                <div class="flex items-center gap-6">
+                    <a href="/src/pages/search.html" class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">Buscar</a>
+                    <a href="/src/pages/dashboard.html" class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">Dashboard</a>
+                    <a href="/src/pages/profile.html" class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">Perfil</a>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div id="headerAuth" class="flex items-center gap-3">
+                        <a href="/src/pages/login.html" class="px-4 py-2 text-gray-700 dark:text-gray-300 font-medium hover:text-primary dark:hover:text-primary transition-colors">Entrar</a>
+                        <a href="/src/pages/register.html" class="px-4 py-2 bg-primary hover:bg-primary-dark text-background-dark font-semibold rounded-xl transition-all">Cadastrar</a>
+                    </div>
+                    <div id="headerUser" class="hidden items-center gap-3">
+                        <span id="headerUserName" class="text-gray-700 dark:text-gray-300 font-medium"></span>
+                        <button id="headerLogout" class="px-4 py-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-colors">Sair</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <script>
+        (function(){
+            const token = localStorage.getItem('token');
+            const user = JSON.parse(localStorage.getItem('user')||'{}');
+            const authEl = document.getElementById('headerAuth');
+            const userEl = document.getElementById('headerUser');
+            const nameEl = document.getElementById('headerUserName');
+            if (authEl && userEl) {
+                if (token) {
+                    authEl.classList.add('hidden');
+                    userEl.classList.remove('hidden');
+                    if (nameEl) nameEl.textContent = user?.name || 'Minha Conta';
+                } else {
+                    authEl.classList.remove('hidden');
+                    userEl.classList.add('hidden');
+                }
+            }
+            const logout = document.getElementById('headerLogout');
+            if (logout) {
+                logout.addEventListener('click', () => {
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                    window.location.href = '/index.html';
+                });
+            }
+        })();
+    </script>
     <!-- Top App Bar -->
     <div
         class="sticky top-0 z-50 flex items-center justify-between bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md p-4 pb-2 border-b border-gray-200 dark:border-white/5 transition-colors">
-        <button
-            class="flex size-10 items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
-            <span class="material-symbols-outlined text-slate-900 dark:text-white"
-                style="font-size: 24px;">arrow_back</span>
-        </button>
+ 
         <h2 class="text-lg font-bold leading-tight tracking-[-0.015em]">Perfil</h2>
         <button
             class="flex size-10 items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors group">
@@ -293,22 +343,39 @@
             </div>
         </div>
     </div>
-    <!-- Floating Bottom Action Bar -->
-    <div
-        class="fixed bottom-0 left-0 w-full p-4 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-lg border-t border-gray-200 dark:border-white/10 z-40 pb-safe">
-        <div class="flex gap-4 items-center max-w-md mx-auto">
-            <div class="flex flex-col">
-                <span class="text-xs text-slate-500 dark:text-slate-400">Total estimado</span>
-                <span class="text-lg font-bold text-slate-900 dark:text-white">R$ 120<span
-                        class="text-xs font-normal text-slate-500">/visita</span></span>
+     <!-- Bottom Navigation (Mobile) -->
+    <nav class="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-white dark:bg-surface-dark border-t border-gray-100 dark:border-white/5 py-3">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-around items-center">
+                <a href="dashboard.html" class="flex flex-col items-center text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors relative">
+                    <span class="material-symbols-outlined text-2xl">home</span>
+                    <span class="text-xs mt-1">Início</span>
+                </a>
+                
+                <a href="search.html" class="flex flex-col items-center text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined text-2xl">search</span>
+                    <span class="text-xs mt-1">Buscar</span>
+                </a>
+         
+                
+                <a href="appointments.html" class="flex flex-col items-center text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined text-2xl">calendar_month</span>
+                    <span class="text-xs mt-1">Agendamentos</span>
+                </a>
+
+                     <a href="chat.html" class="flex flex-col items-center text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors relative">
+                    <span class="material-symbols-outlined text-2xl">chat_bubble</span>
+                    <span class="absolute -top-1 -right-1 h-2 w-2 bg-red-500 rounded-full"></span>
+                    <span class="text-xs mt-1">Chat</span>
+                </a>
+                
+                <a href="profile.html" class="flex flex-col items-center text-primary">
+                    <span class="material-symbols-outlined text-2xl">person</span>
+                    <span class="text-xs mt-1">Perfil</span>
+                </a>
             </div>
-            <button
-                class="flex-1 h-12 bg-primary hover:bg-green-400 active:bg-green-500 text-black font-bold text-base rounded-lg shadow-lg shadow-primary/20 flex items-center justify-center gap-2 transition-all">
-                Solicitar Serviço
-                <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
-            </button>
         </div>
-    </div>
+    </nav>
 </body>
 
 </html>

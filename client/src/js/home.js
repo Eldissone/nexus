@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 // Funções globais
 window.viewService = (serviceId) => {
     localStorage.setItem('selectedService', serviceId);
-    window.location.href = '/booking.html';
+    window.location.href = '/scheduling.html';
 };
 
 window.viewProvider = (providerId) => {

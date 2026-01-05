@@ -55,6 +55,60 @@
 
 <body
     class="bg-background-light dark:bg-background-dark font-display text-gray-900 dark:text-gray-100 min-h-screen flex flex-col overflow-x-hidden">
+    <nav class="hidden md:block bg-white dark:bg-surface-dark border-b border-gray-100 dark:border-white/5">
+        <div class="container mx-auto px-6">
+            <div class="flex items-center justify-between h-16">
+                <a href="/index.html" class="flex items-center gap-2">
+                    <div class="bg-primary/10 p-2 rounded-lg">
+                        <span class="material-symbols-outlined text-primary text-xl">local_hospital</span>
+                    </div>
+                    <span class="text-lg font-bold text-text-dark dark:text-white">HealthConnect</span>
+                </a>
+                <div class="flex items-center gap-6">
+                    <a href="/src/pages/search.html" class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">Buscar</a>
+                    <a href="/src/pages/dashboard.html" class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">Dashboard</a>
+                    <a href="/src/pages/profile.html" class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">Perfil</a>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div id="headerAuth" class="flex items-center gap-3">
+                        <a href="/src/pages/login.html" class="px-4 py-2 text-gray-700 dark:text-gray-300 font-medium hover:text-primary dark:hover:text-primary transition-colors">Entrar</a>
+                        <a href="/src/pages/register.html" class="px-4 py-2 bg-primary hover:bg-primary-dark text-background-dark font-semibold rounded-xl transition-all">Cadastrar</a>
+                    </div>
+                    <div id="headerUser" class="hidden items-center gap-3">
+                        <span id="headerUserName" class="text-gray-700 dark:text-gray-300 font-medium"></span>
+                        <button id="headerLogout" class="px-4 py-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-colors">Sair</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <script>
+        (function(){
+            const token = localStorage.getItem('token');
+            const user = JSON.parse(localStorage.getItem('user')||'{}');
+            const authEl = document.getElementById('headerAuth');
+            const userEl = document.getElementById('headerUser');
+            const nameEl = document.getElementById('headerUserName');
+            if (authEl && userEl) {
+                if (token) {
+                    authEl.classList.add('hidden');
+                    userEl.classList.remove('hidden');
+                    if (nameEl) nameEl.textContent = user?.name || 'Minha Conta';
+                } else {
+                    authEl.classList.remove('hidden');
+                    userEl.classList.add('hidden');
+                }
+            }
+            const logout = document.getElementById('headerLogout');
+            if (logout) {
+                logout.addEventListener('click', () => {
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                    window.location.href = '/index.html';
+                });
+            }
+        })();
+    </script>
     <!-- Top App Bar -->
     <div class="sticky top-0 z-50 bg-background-dark/95 backdrop-blur-sm border-b border-white/5 pt-safe-top">
         <div class="flex items-center justify-between p-4">
@@ -124,7 +178,7 @@
             </div>
         </div>
         <!-- Appointments List -->
-        <div class="flex flex-col gap-5 px-4 pb-24">
+        <div class="flex flex-col gap-5 px-4 pb-24" id="appointmentsContainer">
             <!-- Section Title -->
             <div class="flex items-center justify-between mt-2">
                 <h3 class="text-white text-lg font-bold">Próximos</h3>
@@ -269,6 +323,59 @@
                 Agendamento</span>
         </button>
     </div>
+    <script type="module">
+        import { API_URL } from '../../utils/config.js';
+        const container = document.getElementById('appointmentsContainer');
+        async function loadAppointments() {
+            const token = localStorage.getItem('token');
+            if (!token) { window.location.href = '/src/pages/login.html'; return; }
+            try {
+                const res = await fetch(`${API_URL}/api/appointments/my-appointments`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const items = await res.json();
+                container.innerHTML = items.map(item => `
+                    <div class="group relative flex flex-col gap-4 rounded-2xl bg-surface-dark p-4 shadow-lg border border-white/5 hover:border-primary/30 transition-all duration-300">
+                        <div class="flex items-start justify-between">
+                            <div class="flex gap-4">
+                                <div class="relative h-14 w-14 shrink-0 overflow-hidden rounded-full border-2 border-surface-light"></div>
+                                <div class="flex flex-col gap-1">
+                                    <h4 class="text-white text-base font-bold leading-tight">${item.serviceId?.title || 'Serviço'}</h4>
+                                    <p class="text-[#92c9a4] text-sm font-medium">${item.providerId?.name || ''}</p>
+                                    <div class="flex items-center gap-1 text-xs text-gray-400 mt-0.5">
+                                        <span class="material-symbols-outlined text-[14px]">event</span>
+                                        <span>${new Date(item.scheduledDate).toLocaleDateString()} ${item.scheduledTime || ''}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="rounded-full bg-primary/10 px-2.5 py-1 backdrop-blur-md">
+                                <p class="text-primary text-xs font-bold uppercase tracking-wide">${statusText(item.status)}</p>
+                            </div>
+                        </div>
+                        <div class="h-px w-full bg-white/10"></div>
+                        <div class="grid grid-cols-2 gap-3 mt-1">
+                            ${item.status === 'pending' ? `<button class="flex items-center justify-center h-10 rounded-lg bg-surface-light text-white text-sm font-semibold hover:bg-white/10 transition-colors" onclick="cancelAppointment('${item._id}')">Cancelar</button>` : `<span></span>`}
+                            <button class="flex items-center justify-center h-10 rounded-lg bg-surface-light border border-primary/30 text-primary text-sm font-bold hover:bg-primary/5 transition-all" onclick="viewDetails('${item._id}')">Detalhes</button>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (e) {
+                container.innerHTML = '<p class="text-white/70">Erro ao carregar seu histórico.</p>';
+            }
+        }
+        function statusText(s){ return ({pending:'Pendente',confirmed:'Confirmado',in_progress:'Em Andamento',completed:'Concluído',cancelled:'Cancelado'})[s]||s }
+        window.cancelAppointment = async (id) => {
+            const token = localStorage.getItem('token');
+            await fetch(`${API_URL}/api/appointments/${id}/status`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                body: JSON.stringify({ status: 'cancelled' })
+            });
+            loadAppointments();
+        };
+        window.viewDetails = (id) => { window.location.href = '/src/pages/dashboard.html#appointments'; };
+        document.addEventListener('DOMContentLoaded', loadAppointments);
+    </script>
 </body>
 
 </html>

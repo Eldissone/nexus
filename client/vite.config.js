@@ -33,10 +33,10 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
-        login: resolve(__dirname, 'login.html'),
-        register: resolve(__dirname, 'register.html'),
-        dashboard: resolve(__dirname, 'dashboard.html'),
-        search: resolve(__dirname, 'search.html')
+        login: resolve(__dirname, 'src/pages/login.html'),
+        register: resolve(__dirname, 'src/pages/register.html'),
+        dashboard: resolve(__dirname, 'src/pages/dashboard.html'),
+        search: resolve(__dirname, 'src/pages/search.html')
       }
     }
   }

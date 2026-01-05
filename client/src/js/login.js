@@ -27,9 +27,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // Redirecionar baseado no role
                 if (data.user.role === 'provider') {
-                    window.location.href = '/dashboard.html'; // Usar mesmo dashboard por enquanto
+                    window.location.href = '/src/pages/dashboardprovider.html';
                 } else {
-                    window.location.href = '/dashboard.html';
+                    window.location.href = '/src/pages/dashboard.html';
                 }
             } else {
                 alert(data.message || 'Erro no login');
