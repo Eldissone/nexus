@@ -14,9 +14,10 @@ router.post('/', auth, async (req, res) => {
         });
 
         await appointment.save();
-        
-        // Notificar o prestador via WebSocket
-        // Implementação na rota real
+        const io = req.app.get('io');
+        if (io) {
+            io.to(appointment._id.toString()).emit('status-updated', appointment);
+        }
         
         res.status(201).json(appointment);
     } catch (error) {
@@ -63,23 +64,66 @@ router.get('/availability', async (req, res) => {
 router.patch('/:id/status', auth, async (req, res) => {
     try {
         const appointment = await Appointment.findById(req.params.id);
-        
-        if (appointment.providerId.toString() !== req.userId) {
+        if (!appointment) {
+            return res.status(404).json({ message: 'Agendamento não encontrado' });
+        }
+
+        const requestedStatus = req.body.status;
+
+        if (req.userRole === 'provider') {
+            if (appointment.providerId.toString() !== req.userId) {
+                return res.status(403).json({ message: 'Não autorizado' });
+            }
+            appointment.status = requestedStatus;
+            appointment.updatedAt = new Date();
+            if (requestedStatus === 'completed') {
+                appointment.completedAt = new Date();
+            }
+        } else if (req.userRole === 'client') {
+            if (appointment.clientId.toString() !== req.userId) {
+                return res.status(403).json({ message: 'Não autorizado' });
+            }
+            if (requestedStatus !== 'cancelled') {
+                return res.status(400).json({ message: 'Clientes só podem cancelar' });
+            }
+            appointment.status = 'cancelled';
+            appointment.updatedAt = new Date();
+        } else {
             return res.status(403).json({ message: 'Não autorizado' });
         }
 
-        appointment.status = req.body.status;
-        appointment.updatedAt = new Date();
+        await appointment.save();
+        const io = req.app.get('io');
+        if (io) {
+            io.to(appointment._id.toString()).emit('status-updated', appointment);
+        }
         
-        if (req.body.status === 'completed') {
-            appointment.completedAt = new Date();
+        res.json(appointment);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+// Avaliar agendamento (cliente após concluído)
+router.patch('/:id/review', auth, async (req, res) => {
+    try {
+        const { rating, review } = req.body;
+        const appointment = await Appointment.findById(req.params.id);
+        if (!appointment) {
+            return res.status(404).json({ message: 'Agendamento não encontrado' });
+        }
+        if (appointment.clientId.toString() !== req.userId) {
+            return res.status(403).json({ message: 'Não autorizado' });
+        }
+        if (appointment.status !== 'completed') {
+            return res.status(400).json({ message: 'Somente agendamentos concluídos podem ser avaliados' });
         }
 
+        appointment.rating = rating;
+        appointment.review = review;
+        appointment.updatedAt = new Date();
         await appointment.save();
-        
-        // Emitir evento de atualização via WebSocket
-        // req.io.to(appointment._id.toString()).emit('status-updated', appointment);
-        
+
         res.json(appointment);
     } catch (error) {
         res.status(500).json({ message: error.message });

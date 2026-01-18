@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agendar Serviço - HealthConnect</title>
+    <title>Agendar Serviço - Muilo</title>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -108,7 +108,7 @@
                     <div class="bg-primary/10 p-2 rounded-lg">
                         <span class="material-symbols-outlined text-primary text-xl">local_hospital</span>
                     </div>
-                    <span class="text-lg font-bold text-text-dark dark:text-white">HealthConnect</span>
+                    <span class="text-lg font-bold text-text-dark dark:text-white">Muilo</span>
                 </a>
                 <div class="flex items-center gap-6">
                     <a href="/src/pages/search.html" class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">Buscar</a>
@@ -166,7 +166,7 @@
                         <div class="p-2 rounded-lg">
                             <span class="material-symbols-outlined text-primary">local_hospital</span>
                         </div>
-                        <span class="text-lg font-bold text-text-dark dark:text-white">HealthConnect</span>
+                        <span class="text-lg font-bold text-text-dark dark:text-white">Muilo</span>
                     </a>
                 </div>
                 
@@ -556,6 +556,7 @@
 
     <!-- JavaScript -->
     <script type="module">
+        if (false) {
         // Get service data from localStorage or URL parameters
         const service = JSON.parse(localStorage.getItem('bookingService') || '{}');
         const serviceId = new URLSearchParams(window.location.search).get('service');
@@ -959,6 +960,8 @@
         // Make functions available globally
         window.selectCalendarDate = selectCalendarDate;
         window.selectTimeSlot = selectTimeSlot;
+        }
     </script>
+    <script type="module" src="../js/booking.js"></script>
 </body>
 </html>

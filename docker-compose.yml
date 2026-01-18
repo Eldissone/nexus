@@ -14,7 +14,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - MONGODB_URI=mongodb://mongodb:27017/healthconnect
+      - MONGODB_URI=mongodb://mongodb:27017/Muilo
     depends_on:
       - mongodb
 

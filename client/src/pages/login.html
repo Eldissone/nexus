@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Entrar - HealthConnect</title>
+    <title>Entrar - Muilo</title>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -75,60 +75,6 @@
     </style>
 </head>
 <body class="bg-background-light dark:bg-background-dark text-text-dark dark:text-text-light font-display min-h-screen flex items-center justify-center p-4">
-    <nav class="hidden md:block bg-white dark:bg-surface-dark border-b border-gray-100 dark:border-white/5">
-        <div class="container mx-auto px-6">
-            <div class="flex items-center justify-between h-16">
-                <a href="/index.html" class="flex items-center gap-2">
-                    <div class="bg-primary/10 p-2 rounded-lg">
-                        <span class="material-symbols-outlined text-primary text-xl">local_hospital</span>
-                    </div>
-                    <span class="text-lg font-bold text-text-dark dark:text-white">HealthConnect</span>
-                </a>
-                <div class="flex items-center gap-6">
-                    <a href="/src/pages/search.html" class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">Buscar</a>
-                    <a href="/src/pages/dashboard.html" class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">Dashboard</a>
-                    <a href="/src/pages/profile.html" class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">Perfil</a>
-                </div>
-                <div class="flex items-center gap-3">
-                    <div id="headerAuth" class="flex items-center gap-3">
-                        <a href="/src/pages/login.html" class="px-4 py-2 text-gray-700 dark:text-gray-300 font-medium hover:text-primary dark:hover:text-primary transition-colors">Entrar</a>
-                        <a href="/src/pages/register.html" class="px-4 py-2 bg-primary hover:bg-primary-dark text-background-dark font-semibold rounded-xl transition-all">Cadastrar</a>
-                    </div>
-                    <div id="headerUser" class="hidden items-center gap-3">
-                        <span id="headerUserName" class="text-gray-700 dark:text-gray-300 font-medium"></span>
-                        <button id="headerLogout" class="px-4 py-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-colors">Sair</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
-    <script>
-        (function(){
-            const token = localStorage.getItem('token');
-            const user = JSON.parse(localStorage.getItem('user')||'{}');
-            const authEl = document.getElementById('headerAuth');
-            const userEl = document.getElementById('headerUser');
-            const nameEl = document.getElementById('headerUserName');
-            if (authEl && userEl) {
-                if (token) {
-                    authEl.classList.add('hidden');
-                    userEl.classList.remove('hidden');
-                    if (nameEl) nameEl.textContent = user?.name || 'Minha Conta';
-                } else {
-                    authEl.classList.remove('hidden');
-                    userEl.classList.add('hidden');
-                }
-            }
-            const logout = document.getElementById('headerLogout');
-            if (logout) {
-                logout.addEventListener('click', () => {
-                    localStorage.removeItem('token');
-                    localStorage.removeItem('user');
-                    window.location.href = '/index.html';
-                });
-            }
-        })();
-    </script>
     <!-- Back to Home Link -->
     <a href="/index.html" class="fixed top-4 left-4 text-primary hover:text-primary-dark transition-colors flex items-center gap-2 z-10">
         <span class="material-symbols-outlined">arrow_back</span>

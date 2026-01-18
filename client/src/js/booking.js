@@ -3,7 +3,8 @@ import { API_URL } from '../utils/config.js';
 let selectedService = null;
 
 document.addEventListener('DOMContentLoaded', async () => {
-    const serviceId = localStorage.getItem('selectedService');
+    const urlServiceId = new URLSearchParams(window.location.search).get('service');
+    const serviceId = urlServiceId || localStorage.getItem('selectedService');
     if (!serviceId) {
         alert('Nenhum serviço selecionado');
         window.location.href = '/src/pages/search.html';

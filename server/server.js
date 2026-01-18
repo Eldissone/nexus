@@ -4,6 +4,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import http from 'http';
 import { Server } from 'socket.io';
+import rateLimit from 'express-rate-limit';
 
 // Importar rotas
 import authRoutes from './routes/auth.js';
@@ -22,9 +23,21 @@ const io = new Server(server, {
     }
 });
 
+// Disponibilizar io para rotas
+app.set('io', io);
+
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Rate limiting básico para proteger rotas públicas
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 200,
+    standardHeaders: true,
+    legacyHeaders: false
+});
+app.use('/api', limiter);
 
 // Middleware de verificação do banco de dados
 app.use((req, res, next) => {
@@ -36,10 +49,30 @@ app.use((req, res, next) => {
     next();
 });
 
-// Conexão MongoDB
-mongoose.connect(process.env.MONGODB_URI)
-    .then(() => console.log('MongoDB conectado'))
-    .catch(err => console.error('Erro MongoDB:', err));
+// Conexão MongoDB com fallback para banco em memória em ambiente de desenvolvimento
+async function connectDatabase() {
+    const uri = process.env.MONGODB_URI;
+    try {
+        await mongoose.connect(uri, { serverSelectionTimeoutMS: 5000 });
+        console.log('MongoDB conectado');
+        return;
+    } catch (err) {
+        console.error('Erro MongoDB:', err);
+    }
+
+    try {
+        const { MongoMemoryServer } = await import('mongodb-memory-server');
+        const mongod = await MongoMemoryServer.create();
+        const memUri = mongod.getUri();
+        await mongoose.connect(memUri);
+        app.set('mongod', mongod);
+        console.log('MongoDB em memória iniciado para desenvolvimento');
+    } catch (err2) {
+        console.error('Falha ao iniciar MongoDB em memória:', err2);
+    }
+}
+
+connectDatabase();
 
 // Rotas
 app.use('/api/auth', authRoutes);

@@ -10,8 +10,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png'],
       manifest: {
-        name: 'HealthConnect',
-        short_name: 'HealthConnect',
+        name: 'Muilo',
+        short_name: 'Muilo',
         description: 'Plataforma de serviços de saúde',
         theme_color: '#2d8cf0',
         icons: [

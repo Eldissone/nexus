@@ -1,6 +1,6 @@
 {
-  "name": "HealthConnect",
-  "short_name": "HealthConnect",
+  "name": "Muilo",
+  "short_name": "Muilo",
   "description": "Plataforma de serviços de saúde",
   "start_url": "/",
   "display": "standalone",

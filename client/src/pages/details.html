@@ -64,7 +64,7 @@
                             <div class=" p-2 rounded-lg">
                                 <span class="material-symbols-outlined text-primary text-xl">local_hospital</span>
                             </div>
-                            <span class="text-lg font-bold text-text-dark dark:text-white">HealthConnect</span>
+                            <span class="text-lg font-bold text-text-dark dark:text-white">Muilo</span>
                         </a>
                         <div class="flex items-center gap-6">
                             <a href="/src/pages/search.html"
@@ -124,7 +124,7 @@
         <!-- Header Image & Title -->
         <div class="flex flex-col">
             <div class="px-4 pt-4 pb-2">
-                <div class="w-full bg-center bg-no-repeat bg-cover flex flex-col justify-end overflow-hidden rounded-2xl min-h-[220px] shadow-lg relative"
+                <div id="headerImage" class="w-full bg-center bg-no-repeat bg-cover flex flex-col justify-end overflow-hidden rounded-2xl min-h-[220px] shadow-lg relative"
                     data-alt="Physiotherapist helping patient with breathing exercises"
                     style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDWnu2_ZPjLqHSvnlKXo3aJ-wpxhYydDYlEaoW-XuOQSOlIlWrDCuNnWktYObo2Z3IrgNGcje0VPPK9cKTRGI_uC4u2PZhEl0zHi3IWf4B5JebAC16OYMkrtokQplBMgomtdoCnsDcHMyoXlc7wqJqGPT8kPSLLG0lKZ01Dzx8jlCWAzAgD2AcrsdLbWRBUo5c0UuMJH_SvQG7QUJwRWcRiY6y6ik3kQhbbKeQmpWwtRzJ2q6AEx3t1TJ3PK4cAQeiBZNn7EEhen0n2");'>
                     <div
@@ -136,7 +136,7 @@
                             <span class="material-symbols-outlined text-[14px]">verified</span>
                             Verificado
                         </span>
-                        <h1 class="text-white tracking-tight text-3xl font-bold leading-tight drop-shadow-sm">
+                        <h1 id="serviceTitle" class="text-white tracking-tight text-3xl font-bold leading-tight drop-shadow-sm">
                             Fisioterapia Respiratória</h1>
                     </div>
                 </div>
@@ -158,14 +158,14 @@
                 </div>
                 <div class="flex-1">
                     <p class="text-sm text-slate-500 dark:text-slate-400 font-medium">Prestador</p>
-                    <h3 class="text-base font-bold text-slate-900 dark:text-white leading-none">Dr. Ricardo Silva</h3>
+                    <h3 id="providerName" class="text-base font-bold text-slate-900 dark:text-white leading-none">Dr. Ricardo Silva</h3>
                 </div>
                 <div class="flex flex-col items-end">
                     <div class="flex items-center gap-1 text-primary">
                         <span class="material-symbols-outlined text-[18px] fill-1">star</span>
-                        <span class="text-base font-bold text-slate-900 dark:text-white">4.9</span>
+                        <span id="providerRatingSmall" class="text-base font-bold text-slate-900 dark:text-white">4.9</span>
                     </div>
-                    <span class="text-xs text-slate-500 dark:text-slate-400">(120 avaliações)</span>
+                    <span id="reviewsCountSmall" class="text-xs text-slate-500 dark:text-slate-400">(120 avaliações)</span>
                 </div>
             </div>
         </div>
@@ -179,7 +179,7 @@
                     </div>
                     <div>
                         <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">Duração</p>
-                        <p class="text-sm font-bold text-slate-900 dark:text-white">50 min</p>
+                        <p id="serviceDuration" class="text-sm font-bold text-slate-900 dark:text-white">50 min</p>
                     </div>
                 </div>
                 <div
@@ -189,7 +189,7 @@
                     </div>
                     <div>
                         <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">Preço</p>
-                        <p class="text-sm font-bold text-slate-900 dark:text-white">R$ 150</p>
+                        <p id="servicePriceValue" class="text-sm font-bold text-slate-900 dark:text-white">R$ 150</p>
                     </div>
                 </div>
                 <div
@@ -199,7 +199,7 @@
                     </div>
                     <div>
                         <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">Local</p>
-                        <p class="text-sm font-bold text-slate-900 dark:text-white">Domiciliar</p>
+                        <p id="serviceLocal" class="text-sm font-bold text-slate-900 dark:text-white">Domiciliar</p>
                     </div>
                 </div>
             </div>
@@ -207,36 +207,12 @@
         <!-- Description Section -->
         <div class="px-4 py-4">
             <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-3">Sobre o serviço</h3>
-            <div class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed space-y-3">
-                <p>
-                    Tratamento especializado focado na prevenção e tratamento de doenças que atingem o sistema
-                    respiratório, como asma, bronquite, insuficiência respiratória e tuberculose.
-                </p>
-                <p>
-                    O atendimento inclui avaliação clínica, exercícios respiratórios para expansão pulmonar e técnicas
-                    de higiene brônquica para melhora da oxigenação.
-                </p>
-            </div>
+            <div id="serviceDescription" class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed space-y-3"></div>
         </div>
         <!-- Requirements Section -->
         <div class="px-4 py-2">
             <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-3">Requisitos</h3>
-            <ul class="space-y-3">
-                <li class="flex items-start gap-3">
-                    <span class="material-symbols-outlined text-primary shrink-0 mt-0.5 text-[20px]">check_circle</span>
-                    <span class="text-sm text-slate-600 dark:text-slate-300">Encaminhamento médico (se houver)</span>
-                </li>
-                <li class="flex items-start gap-3">
-                    <span class="material-symbols-outlined text-primary shrink-0 mt-0.5 text-[20px]">check_circle</span>
-                    <span class="text-sm text-slate-600 dark:text-slate-300">Espaço livre e arejado para os
-                        exercícios</span>
-                </li>
-                <li class="flex items-start gap-3">
-                    <span class="material-symbols-outlined text-primary shrink-0 mt-0.5 text-[20px]">check_circle</span>
-                    <span class="text-sm text-slate-600 dark:text-slate-300">Roupas confortáveis para
-                        movimentação</span>
-                </li>
-            </ul>
+            <ul id="requirementsList" class="space-y-3"></ul>
         </div>
         <!-- Reviews Snapshot -->
         <div class="px-4 py-6">
@@ -251,7 +227,7 @@
                 <div class="flex items-center gap-4">
                     <div
                         class="flex flex-col items-center justify-center pr-4 border-r border-slate-200 dark:border-white/10">
-                        <span class="text-4xl font-black text-slate-900 dark:text-white tracking-tighter">4.9</span>
+                        <span id="providerRatingLarge" class="text-4xl font-black text-slate-900 dark:text-white tracking-tighter">4.9</span>
                         <div class="flex text-primary gap-0.5 mt-1">
                             <span class="material-symbols-outlined text-[16px] fill-1">star</span>
                             <span class="material-symbols-outlined text-[16px] fill-1">star</span>
@@ -259,7 +235,7 @@
                             <span class="material-symbols-outlined text-[16px] fill-1">star</span>
                             <span class="material-symbols-outlined text-[16px] fill-1">star_half</span>
                         </div>
-                        <span class="text-xs text-slate-500 dark:text-slate-400 mt-1">120 reviews</span>
+                        <span id="reviewsCountLarge" class="text-xs text-slate-500 dark:text-slate-400 mt-1">120 reviews</span>
                     </div>
                     <div class="flex-1 flex flex-col gap-1.5 justify-center">
                         <div class="flex items-center gap-2">
@@ -291,9 +267,9 @@
             <div class="flex items-center justify-between gap-4 max-w-2xl mx-auto">
                 <div class="flex flex-col">
                     <span class="text-xs text-slate-500 dark:text-slate-400 font-medium">Total estimado</span>
-                    <span class="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">R$ 150,00</span>
+                    <span id="detailTotalPrice" class="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">R$ 150,00</span>
                 </div>
-                <button
+                <button id="requestButton"
                     class="flex-1 bg-primary hover:bg-primary/90 text-background-dark font-bold py-3.5 px-6 rounded-xl transition-all active:scale-[0.98] shadow-[0_0_20px_rgba(19,236,91,0.25)] flex items-center justify-center gap-2">
                     <span>Solicitar Serviço</span>
                     <span class="material-symbols-outlined">arrow_forward</span>
@@ -302,7 +278,80 @@
         </div>
     </div>
 
-        <script>
+        <script type="module">
+            import { API_URL } from '../utils/config.js';
+            const qs = new URLSearchParams(window.location.search);
+            const id = qs.get('id');
+
+            const fmtBRL = (n) => (Number(n || 0)).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            const mapCategory = {
+                homeCare: 'Domiciliar',
+                consultation: 'Clínica',
+                nursing: 'Enfermagem',
+                physiotherapy: 'Fisioterapia',
+                laboratory: 'Laboratório',
+                psychology: 'Psicologia',
+                nutrition: 'Nutrição',
+                dentistry: 'Odontologia'
+            };
+
+            async function load() {
+                if (!id) { window.location.href = '/src/pages/search.html'; return; }
+                try {
+                    const res = await fetch(`${API_URL}/api/services/${id}`);
+                    const service = await res.json();
+
+                    document.getElementById('serviceTitle').textContent = service.title || 'Serviço';
+                    const img = document.getElementById('headerImage');
+                    if (img) img.style.backgroundImage = `url("https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=1200&h=600&fit=crop")`;
+
+                    document.getElementById('providerName').textContent = service.providerId?.name || '';
+                    const rating = Number(service.providerId?.rating || 0).toFixed(1);
+                    document.getElementById('providerRatingSmall').textContent = rating;
+
+                    document.getElementById('serviceDuration').textContent = `${service.duration || 0} min`;
+                    document.getElementById('servicePriceValue').textContent = fmtBRL(service.price);
+                    document.getElementById('detailTotalPrice').textContent = fmtBRL(service.price);
+                    document.getElementById('serviceLocal').textContent = mapCategory[service.category] || '—';
+
+                    const desc = document.getElementById('serviceDescription');
+                    desc.textContent = service.description || '';
+
+                    const req = document.getElementById('requirementsList');
+                    if (service.requirements && service.requirements.length) {
+                        req.innerHTML = service.requirements.map(r => `
+                            <li class="flex items-start gap-3">
+                                <span class="material-symbols-outlined text-primary shrink-0 mt-0.5 text-[20px]">check_circle</span>
+                                <span class="text-sm text-slate-600 dark:text-slate-300">${r}</span>
+                            </li>
+                        `).join('');
+                    } else {
+                        req.innerHTML = '';
+                    }
+
+                    try {
+                        if (service.providerId?._id) {
+                            const rres = await fetch(`${API_URL}/api/providers/${service.providerId._id}/reviews`);
+                            const rdata = await rres.json();
+                            const avg = Number(rdata.averageRating || 0).toFixed(1);
+                            const count = Number(rdata.reviewsCount || 0);
+                            document.getElementById('providerRatingLarge').textContent = avg;
+                            document.getElementById('reviewsCountSmall').textContent = `(${count} avaliações)`;
+                            document.getElementById('reviewsCountLarge').textContent = `${count} reviews`;
+                        }
+                    } catch {}
+
+                    const btn = document.getElementById('requestButton');
+                    btn.addEventListener('click', () => {
+                        window.location.href = `/src/pages/appointments.html?service=${service._id}`;
+                    });
+                } catch (e) {
+                    window.location.href = '/src/pages/search.html';
+                }
+            }
+
+            document.addEventListener('DOMContentLoaded', load);
+        </script>
     (function () {
         const token = localStorage.getItem('token');
         const user = JSON.parse(localStorage.getItem('user') || '{}');

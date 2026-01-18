@@ -31,6 +31,12 @@
           "scrollbar-width: none"
         ]
       }
+    ],
+    "axe/keyboard": [
+      "default",
+      {
+        "nested-interactive": "off"
+      }
     ]
   }
 }
