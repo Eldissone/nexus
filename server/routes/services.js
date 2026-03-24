@@ -1,4 +1,5 @@
 import express from 'express';
+import mongoose from 'mongoose';
 import Service from '../models/Service.js';
 import { auth } from '../middleware/auth.js';
 
@@ -44,6 +45,9 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
     try {
+        if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+            return res.status(400).json({ message: 'ID de serviço inválido' });
+        }
         const service = await Service.findById(req.params.id)
             .populate('providerId', 'name rating');
         if (!service) {

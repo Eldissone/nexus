@@ -142,6 +142,7 @@
                         <span class="material-symbols-outlined">search</span>
                     </div>
                     <input
+                        id="searchInput"
                         class="flex w-full min-w-0 flex-1 bg-transparent text-white focus:outline-0 placeholder:text-[#92c9a4]/70 px-0 text-base font-normal leading-normal"
                         placeholder="Buscar médico ou especialidade" value="" />
                     <div
@@ -153,157 +154,30 @@
             <!-- Filter Chips -->
             <div class="flex gap-2 overflow-x-auto no-scrollbar pb-2">
                 <button
-                    class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-primary px-5 transition-transform active:scale-95">
+                    data-filter="all"
+                    class="filter-chip flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-primary px-5 transition-transform active:scale-95">
                     <p class="text-background-dark text-sm font-bold">Todos</p>
                 </button>
                 <button
-                    class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-surface-light border border-white/10 px-5 hover:bg-white/10 transition-colors">
+                    data-filter="consultation"
+                    class="filter-chip flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-surface-light border border-white/10 px-5 hover:bg-white/10 transition-colors">
                     <p class="text-white text-sm font-medium">Consulta</p>
                 </button>
                 <button
-                    class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-surface-light border border-white/10 px-5 hover:bg-white/10 transition-colors">
+                    data-filter="laboratory"
+                    class="filter-chip flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-surface-light border border-white/10 px-5 hover:bg-white/10 transition-colors">
                     <p class="text-white text-sm font-medium">Exames</p>
                 </button>
                 <button
-                    class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-surface-light border border-white/10 px-5 hover:bg-white/10 transition-colors">
+                    data-filter="homeCare"
+                    class="filter-chip flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-surface-light border border-white/10 px-5 hover:bg-white/10 transition-colors">
                     <p class="text-white text-sm font-medium">Domiciliar</p>
                 </button>
             </div>
         </div>
         <!-- Appointments List -->
         <div class="flex flex-col gap-5 px-4 pb-24" id="appointmentsContainer">
-            <!-- Section Title -->
-            <div class="flex items-center justify-between mt-2">
-                <h3 class="text-white text-lg font-bold">Próximos</h3>
-                <span class="text-primary text-sm font-medium cursor-pointer">Ver calendário</span>
-            </div>
-            <!-- Card 1: Today -->
-            <div
-                class="group relative flex flex-col gap-4 rounded-2xl bg-surface-dark p-4 shadow-lg border border-white/5 hover:border-primary/30 transition-all duration-300">
-                <div class="flex items-start justify-between">
-                    <div class="flex gap-4">
-                        <div
-                            class="relative h-14 w-14 shrink-0 overflow-hidden rounded-full border-2 border-surface-light">
-                            <img alt="Dr. Ana Silva" class="h-full w-full object-cover"
-                                data-alt="Female doctor smiling portrait"
-                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBdIdS-t8s7vAeKRvbPCLVwsIW7s3CQIlxMVfcKp1u-dGoAEnhmdU1uQCTKwjahBkwYEW7W1DnCul68t8HKbIjj7ilKrpJ9iGPp6iLVIRg817UPKWigjMz9xnc1TnhUJHtPkhTzRXQlGjv1bOO1xy6na6DQ5lfPobe-zSaXyqfI0YOvKY3vKX9XUjk3kbiWQJcJhvFhinsRySpChE_Py5Z749rXzDgdyMLoNQn7GKe0b8UFLSvuHOBU9P_EAzSdilt2UzmYWt19wrm_" />
-                        </div>
-                        <div class="flex flex-col gap-1">
-                            <h4 class="text-white text-base font-bold leading-tight">Enfermagem Domiciliar</h4>
-                            <p class="text-[#92c9a4] text-sm font-medium">Dra. Ana Silva</p>
-                            <div class="flex items-center gap-1 text-xs text-gray-400 mt-0.5">
-                                <span class="material-symbols-outlined text-[14px]">location_on</span>
-                                <span class="truncate max-w-[150px]">Residência (Cadastrada)</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="rounded-full bg-primary/10 px-2.5 py-1 backdrop-blur-md">
-                        <p class="text-primary text-xs font-bold uppercase tracking-wide">Confirmado</p>
-                    </div>
-                </div>
-                <div class="h-px w-full bg-white/10"></div>
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-2 text-white">
-                        <div
-                            class="flex items-center justify-center w-8 h-8 rounded-full bg-surface-light text-primary">
-                            <span class="material-symbols-outlined text-[18px]">calendar_today</span>
-                        </div>
-                        <div class="flex flex-col">
-                            <span class="text-xs text-[#92c9a4] font-medium">Data e Horário</span>
-                            <span class="text-sm font-bold">Hoje, 14:00</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="grid grid-cols-2 gap-3 mt-1">
-                    <button
-                        class="flex items-center justify-center h-10 rounded-lg bg-surface-light text-white text-sm font-semibold hover:bg-white/10 transition-colors">
-                        Reagendar
-                    </button>
-                    <button
-                        class="flex items-center justify-center h-10 rounded-lg bg-primary text-background-dark text-sm font-bold hover:brightness-110 transition-all shadow-[0_0_15px_rgba(19,236,91,0.2)]">
-                        Ver Detalhes
-                    </button>
-                </div>
-            </div>
-            <!-- Card 2: Upcoming -->
-            <div
-                class="group relative flex flex-col gap-4 rounded-2xl bg-surface-dark p-4 shadow-lg border border-white/5 hover:border-primary/30 transition-all duration-300">
-                <div class="flex items-start justify-between">
-                    <div class="flex gap-4">
-                        <div
-                            class="relative h-14 w-14 shrink-0 overflow-hidden rounded-full border-2 border-surface-light">
-                            <img alt="Dr. Carlos Mendes" class="h-full w-full object-cover"
-                                data-alt="Male doctor serious portrait"
-                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsZjJJA4Xq_ydwAufQDuKJMHQGzsT2bYfLKiHoDJR8ao4rfz_kHSE4ENSe3UKXQ90Bv4ID2unzTsYkKRk6U6oOhCrCJawlf3TsQFpYHzQJWP2DJJNjnrQPrCOkSkMRlT9uaiirB7rjGRw30yxtIaQztiYrcrN50X_dN00ngc3smOOtQJo-olqkAoG8a7mSayJxQzfJlOIXtvegYzI567H_J-v2XyyKudQbxAuzNM6ecrCRkwohyskTFVp46c3HJ9Nx6I9jjOSlcMaw" />
-                        </div>
-                        <div class="flex flex-col gap-1">
-                            <h4 class="text-white text-base font-bold leading-tight">Cardiologista</h4>
-                            <p class="text-[#92c9a4] text-sm font-medium">Dr. Carlos Mendes</p>
-                            <div class="flex items-center gap-1 text-xs text-gray-400 mt-0.5">
-                                <span class="material-symbols-outlined text-[14px]">videocam</span>
-                                <span>Telemedicina</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="rounded-full bg-blue-500/10 px-2.5 py-1 backdrop-blur-md">
-                        <p class="text-blue-400 text-xs font-bold uppercase tracking-wide">Aguardando</p>
-                    </div>
-                </div>
-                <div class="h-px w-full bg-white/10"></div>
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-2 text-white">
-                        <div
-                            class="flex items-center justify-center w-8 h-8 rounded-full bg-surface-light text-[#92c9a4]">
-                            <span class="material-symbols-outlined text-[18px]">event</span>
-                        </div>
-                        <div class="flex flex-col">
-                            <span class="text-xs text-[#92c9a4] font-medium">Data e Horário</span>
-                            <span class="text-sm font-bold">28 Out, 09:30</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="grid grid-cols-2 gap-3 mt-1">
-                    <button
-                        class="flex items-center justify-center h-10 rounded-lg bg-surface-light text-white text-sm font-semibold hover:bg-white/10 transition-colors">
-                        Cancelar
-                    </button>
-                    <button
-                        class="flex items-center justify-center h-10 rounded-lg bg-surface-light border border-primary/30 text-primary text-sm font-bold hover:bg-primary/5 transition-all">
-                        Detalhes
-                    </button>
-                </div>
-            </div>
-            <!-- Section Title Past -->
-            <div class="flex items-center justify-between mt-4">
-                <h3 class="text-white/60 text-lg font-bold">Anteriores</h3>
-                <span class="text-[#92c9a4] text-sm font-medium cursor-pointer">Ver todos</span>
-            </div>
-            <!-- Card 3: Past (Completed) - Visual differentiation: More subdued -->
-            <div
-                class="group relative flex flex-col gap-3 rounded-2xl bg-surface-dark/60 p-4 border border-white/5 opacity-80 hover:opacity-100 transition-opacity">
-                <div class="flex items-start justify-between">
-                    <div class="flex gap-4">
-                        <div
-                            class="relative h-12 w-12 shrink-0 overflow-hidden rounded-full grayscale border border-surface-light">
-                            <img alt="Dra. Julia Santos" class="h-full w-full object-cover"
-                                data-alt="Female nutritionist smiling"
-                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCeIpDB2R15Pqwy2aPC7OhG77a9HEALXshWLkqh5iiBY2HMAwjXkMUc9M6XGseJ0CmRhWjRwgVuXuByZFyG4X0I3MhIpFuvbGjbik_QRI-tPGQ-UKkQSMSeuJyqHWVlNMQik7AyJFEdh8K-F_9bxm7Kzn16Try0UFOglx96X-RLwFm-0fbpibbS4MIleiITXSu85olmw1ZmuYtTUuCFwyk99FCQ62bEG64lfQzRXPFFgoFh5clQsiLHdNyFax3mMPYmZnm2Ybp8NYcQ" />
-                        </div>
-                        <div class="flex flex-col gap-1">
-                            <h4 class="text-gray-200 text-base font-bold leading-tight">Nutricionista</h4>
-                            <p class="text-gray-500 text-sm font-medium">Dra. Julia Santos</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-1 rounded-full bg-surface-light px-2.5 py-1">
-                        <span class="material-symbols-outlined text-[14px] text-gray-400">check_circle</span>
-                        <p class="text-gray-400 text-xs font-bold uppercase tracking-wide">Concluído</p>
-                    </div>
-                </div>
-                <div class="flex items-center justify-between mt-1 pl-16">
-                    <span class="text-sm text-gray-500 font-medium">10 Set • Consulta Presencial</span>
-                    <button class="text-primary text-sm font-bold hover:underline">Avaliar</button>
-                </div>
-            </div>
+            <div id="appointmentsEmpty" class="hidden text-white/70 text-sm">Nenhum agendamento encontrado.</div>
         </div>
     </div>
     <!-- Floating Action Button for New Appointment -->
@@ -318,56 +192,190 @@
     </div>
     <script type="module">
         import { API_URL } from '../utils/config.js';
+
         const container = document.getElementById('appointmentsContainer');
+        const emptyState = document.getElementById('appointmentsEmpty');
+        const searchInput = document.getElementById('searchInput');
+        const viewToggle = document.querySelectorAll('input[name="view-toggle"]');
+        const filterChips = document.querySelectorAll('.filter-chip');
+
+        let appointments = [];
+        let currentView = 'Agendados';
+        let currentFilter = 'all';
+
+        async function loadProfile() {
+            const token = localStorage.getItem('token');
+            if (!token) return;
+            try {
+                const res = await fetch(`${API_URL}/api/users/profile`, { headers: { Authorization: `Bearer ${token}` } });
+                if (!res.ok) return;
+                const user = await res.json();
+                localStorage.setItem('user', JSON.stringify({
+                    id: user._id,
+                    name: user.name,
+                    email: user.email,
+                    role: user.role,
+                    avatar: user.avatar
+                }));
+                const nameEl = document.getElementById('headerUserName');
+                const avatarEl = document.getElementById('headerAvatar');
+                if (nameEl) {
+                    const parts = (user?.name || '').trim().split(/\s+/).filter(Boolean);
+                    nameEl.textContent = parts.length > 1 ? `${parts[0]} ${parts[parts.length - 1]}` : (parts[0] || 'Minha Conta');
+                }
+                if (avatarEl && user.avatar) {
+                    const url = user.avatar.startsWith('http') ? user.avatar : `${API_URL}${user.avatar}`;
+                    avatarEl.style.backgroundImage = `url("${url}")`;
+                    avatarEl.classList.remove('hidden');
+                }
+            } catch {}
+        }
+
         async function loadAppointments() {
             const token = localStorage.getItem('token');
             if (!token) { window.location.href = '/src/pages/login.html'; return; }
             try {
                 const res = await fetch(`${API_URL}/api/appointments/my-appointments`, {
-                    headers: { 'Authorization': `Bearer ${token}` }
+                    headers: { Authorization: `Bearer ${token}` }
                 });
-                const items = await res.json();
-                container.innerHTML = items.map(item => `
-                    <div class="group relative flex flex-col gap-4 rounded-2xl bg-surface-dark p-4 shadow-lg border border-white/5 hover:border-primary/30 transition-all duration-300">
-                        <div class="flex items-start justify-between">
-                            <div class="flex gap-4">
-                                <div class="relative h-14 w-14 shrink-0 overflow-hidden rounded-full border-2 border-surface-light"></div>
-                                <div class="flex flex-col gap-1">
-                                    <h4 class="text-white text-base font-bold leading-tight">${item.serviceId?.title || 'Serviço'}</h4>
-                                    <p class="text-[#92c9a4] text-sm font-medium">${item.providerId?.name || ''}</p>
-                                    <div class="flex items-center gap-1 text-xs text-gray-400 mt-0.5">
-                                        <span class="material-symbols-outlined text-[14px]">event</span>
-                                        <span>${new Date(item.scheduledDate).toLocaleDateString()} ${item.scheduledTime || ''}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="rounded-full bg-primary/10 px-2.5 py-1 backdrop-blur-md">
-                                <p class="text-primary text-xs font-bold uppercase tracking-wide">${statusText(item.status)}</p>
-                            </div>
-                        </div>
-                        <div class="h-px w-full bg-white/10"></div>
-                        <div class="grid grid-cols-2 gap-3 mt-1">
-                            ${item.status === 'pending' ? `<button class="flex items-center justify-center h-10 rounded-lg bg-surface-light text-white text-sm font-semibold hover:bg-white/10 transition-colors" onclick="cancelAppointment('${item._id}')">Cancelar</button>` : `<span></span>`}
-                            <button class="flex items-center justify-center h-10 rounded-lg bg-surface-light border border-primary/30 text-primary text-sm font-bold hover:bg-primary/5 transition-all" onclick="viewDetails('${item._id}')">Detalhes</button>
-                        </div>
-                    </div>
-                `).join('');
-            } catch (e) {
+                appointments = res.ok ? await res.json() : [];
+                render();
+            } catch {
                 container.innerHTML = '<p class="text-white/70">Erro ao carregar seu histórico.</p>';
             }
         }
-        function statusText(s){ return ({pending:'Pendente',confirmed:'Confirmado',in_progress:'Em Andamento',completed:'Concluído',cancelled:'Cancelado'})[s]||s }
+
+        function statusText(s){ 
+            return ({ pending:'Pendente', confirmed:'Confirmado', in_progress:'Em Andamento', completed:'Concluído', cancelled:'Cancelado', rejected:'Rejeitado' })[s] || s; 
+        }
+
+        function categoryLabel(category) {
+            const map = { consultation: 'Consulta', homeCare: 'Domiciliar', nursing: 'Enfermagem', physiotherapy: 'Fisioterapia', laboratory: 'Exames', pharmacy: 'Farmácia' };
+            return map[category] || 'Serviço';
+        }
+
+        function isUpcoming(item) {
+            const d = new Date(item.scheduledDate);
+            if (item.scheduledTime) {
+                const [h, m] = String(item.scheduledTime).split(':').map(Number);
+                if (!isNaN(h)) d.setHours(h, isNaN(m) ? 0 : m, 0, 0);
+            }
+            const now = new Date();
+            return d >= now && !['completed', 'cancelled', 'rejected'].includes(item.status);
+        }
+
+        function matchesSearch(item, query) {
+            if (!query) return true;
+            const q = query.toLowerCase();
+            const service = item.serviceId?.title || '';
+            const provider = item.providerId?.name || '';
+            return service.toLowerCase().includes(q) || provider.toLowerCase().includes(q);
+        }
+
+        function matchesFilter(item) {
+            if (currentFilter === 'all') return true;
+            return item.serviceId?.category === currentFilter;
+        }
+
+        function renderSection(title, items, muted = false) {
+            if (items.length === 0) return '';
+            return `
+                <div class="flex items-center justify-between mt-2">
+                    <h3 class="${muted ? 'text-white/60' : 'text-white'} text-lg font-bold">${title}</h3>
+                </div>
+                ${items.map(item => renderCard(item, muted)).join('')}
+            `;
+        }
+
+        function renderCard(item, muted) {
+            const dateLabel = new Date(item.scheduledDate).toLocaleDateString('pt-BR');
+            const timeLabel = item.scheduledTime ? ` • ${item.scheduledTime}` : '';
+            const status = statusText(item.status);
+            const statusClass = item.status === 'completed' ? 'text-gray-400' : item.status === 'confirmed' ? 'text-primary' : 'text-blue-400';
+            const baseClass = muted ? 'bg-surface-dark/60 opacity-80 hover:opacity-100' : 'bg-surface-dark';
+
+            return `
+                <div class="group relative flex flex-col gap-4 rounded-2xl ${baseClass} p-4 shadow-lg border border-white/5 hover:border-primary/30 transition-all duration-300">
+                    <div class="flex items-start justify-between">
+                        <div class="flex gap-4">
+                            <div class="relative h-14 w-14 shrink-0 overflow-hidden rounded-full border-2 border-surface-light"></div>
+                            <div class="flex flex-col gap-1">
+                                <h4 class="text-white text-base font-bold leading-tight">${item.serviceId?.title || 'Serviço'}</h4>
+                                <p class="text-[#92c9a4] text-sm font-medium">${item.providerId?.name || ''}</p>
+                                <div class="flex items-center gap-1 text-xs text-gray-400 mt-0.5">
+                                    <span class="material-symbols-outlined text-[14px]">event</span>
+                                    <span>${dateLabel}${timeLabel} • ${categoryLabel(item.serviceId?.category)}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rounded-full bg-surface-light px-2.5 py-1 backdrop-blur-md">
+                            <p class="${statusClass} text-xs font-bold uppercase tracking-wide">${status}</p>
+                        </div>
+                    </div>
+                    <div class="h-px w-full bg-white/10"></div>
+                    <div class="grid grid-cols-2 gap-3 mt-1">
+                        ${item.status === 'pending' ? `<button class="flex items-center justify-center h-10 rounded-lg bg-surface-light text-white text-sm font-semibold hover:bg-white/10 transition-colors" onclick="cancelAppointment('${item._id}')">Cancelar</button>` : `<span></span>`}
+                        <button class="flex items-center justify-center h-10 rounded-lg bg-surface-light border border-primary/30 text-primary text-sm font-bold hover:bg-primary/5 transition-all" onclick="viewDetails('${item._id}')">Detalhes</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function render() {
+            const query = searchInput?.value || '';
+            const filtered = appointments.filter(item => matchesSearch(item, query) && matchesFilter(item));
+            const upcoming = filtered.filter(isUpcoming);
+            const past = filtered.filter(item => !isUpcoming(item));
+
+            container.innerHTML = '';
+            if (currentView === 'Agendados') {
+                container.innerHTML += renderSection('Próximos', upcoming, false);
+            } else {
+                container.innerHTML += renderSection('Anteriores', past, true);
+            }
+
+            const hasData = (currentView === 'Agendados' ? upcoming.length : past.length) > 0;
+            emptyState.classList.toggle('hidden', hasData);
+        }
+
         window.cancelAppointment = async (id) => {
             const token = localStorage.getItem('token');
             await fetch(`${API_URL}/api/appointments/${id}/status`, {
                 method: 'PATCH',
-                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
                 body: JSON.stringify({ status: 'cancelled' })
             });
             loadAppointments();
         };
-        window.viewDetails = (id) => { window.location.href = '/src/pages/dashboard.html#appointments'; };
-        document.addEventListener('DOMContentLoaded', loadAppointments);
+
+        window.viewDetails = (id) => { window.location.href = `/src/pages/appointments.html?appointment=${id}`; };
+
+        viewToggle.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                currentView = e.target.value;
+                render();
+            });
+        });
+
+        filterChips.forEach(chip => {
+            chip.addEventListener('click', () => {
+                filterChips.forEach(c => c.classList.remove('bg-primary', 'text-background-dark'));
+                filterChips.forEach(c => c.classList.add('bg-surface-light'));
+                chip.classList.add('bg-primary');
+                chip.classList.remove('bg-surface-light');
+                currentFilter = chip.getAttribute('data-filter') || 'all';
+                render();
+            });
+        });
+
+        if (searchInput) {
+            searchInput.addEventListener('input', render);
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadProfile();
+            await loadAppointments();
+        });
     </script>
 </body>
 

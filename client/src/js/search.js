@@ -121,5 +121,5 @@ window.changePage = (page) => {
 
 window.bookService = (id) => {
     localStorage.setItem('selectedService', id);
-    window.location.href = '/src/pages/scheduling.html';
+    window.location.href = '/src/pages/appointments.html';
 };

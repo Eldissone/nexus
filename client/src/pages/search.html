@@ -957,7 +957,7 @@
             const service = mockServices.find(s => s.id === serviceId);
             if (service) {
                 // Save service to localStorage for details page
-                localStorage.setItem('selectedService', JSON.stringify(service));
+                localStorage.setItem('selectedService', String(service.id));
                 // Redirect to service details page (create this page)
                 window.location.href = `/src/pages/details.html?id=${serviceId}`;
             }
@@ -967,9 +967,9 @@
             const service = mockServices.find(s => s.id === serviceId);
             if (service) {
                 // Save service to localStorage for booking page
-                localStorage.setItem('bookingService', JSON.stringify(service));
+                localStorage.setItem('selectedService', String(service.id));
                 // Redirect to booking page
-                window.location.href = `/src/pages/scheduling.html?service=${serviceId}`;
+                window.location.href = `/src/pages/appointments.html?service=${serviceId}`;
             }
         }
 

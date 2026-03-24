@@ -1,9 +1,25 @@
 import { API_URL, socket } from '../utils/config.js';
 
 let appointments = [];
+let currentUser = null;
+let nextAppointmentId = null;
 
 function mapStatusKey(status) {
   return status === 'in_progress' ? 'inprogress' : status;
+}
+
+function resolveAvatarUrl(path) {
+  if (!path) return null;
+  if (/^https?:\/\//.test(path)) return path;
+  if (path.startsWith('/')) return `${API_URL}${path}`;
+  return `${API_URL}/${path}`;
+}
+
+function formatDisplayName(name) {
+  if (!name || typeof name !== 'string') return 'Usuário';
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return 'Usuário';
+  return parts.length === 1 ? parts[0] : `${parts[0]} ${parts[parts.length - 1]}`;
 }
 
 async function loadDashboard() {
@@ -14,27 +30,51 @@ async function loadDashboard() {
   }
 
   try {
-    const userStr = localStorage.getItem('user');
-    if (userStr) {
-      try {
-        const user = JSON.parse(userStr);
-        const nameEl = document.getElementById('userName');
-        const nameMobileEl = document.getElementById('userNameMobile');
-        if (nameEl) nameEl.textContent = user.name;
-        if (nameMobileEl) nameMobileEl.textContent = (user.name || '').split(' ')[0] || user.name;
-      } catch {}
-    }
+    await loadProfile(token);
 
     const res = await fetch(`${API_URL}/api/appointments/my-appointments`, {
       headers: { Authorization: `Bearer ${token}` },
       credentials: 'include'
     });
-    appointments = await res.json();
+    appointments = res.ok ? await res.json() : [];
     updateDashboard();
     setupWebSocket();
   } catch (error) {
     console.error('Erro ao carregar dashboard:', error);
   }
+}
+
+async function loadProfile(token) {
+  try {
+    const res = await fetch(`${API_URL}/api/users/profile`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (res.ok) {
+      currentUser = await res.json();
+      localStorage.setItem('user', JSON.stringify({
+        id: currentUser._id,
+        name: currentUser.name,
+        email: currentUser.email,
+        role: currentUser.role,
+        avatar: currentUser.avatar,
+        profile: currentUser.profile
+      }));
+    }
+  } catch {
+    const userStr = localStorage.getItem('user');
+    if (userStr) {
+      try { currentUser = JSON.parse(userStr); } catch {}
+    }
+  }
+
+  const nameEl = document.getElementById('userName');
+  const nameMobileEl = document.getElementById('userNameMobile');
+  if (nameEl) nameEl.textContent = formatDisplayName(currentUser?.name);
+  if (nameMobileEl) nameMobileEl.textContent = (currentUser?.name || '').split(' ')[0] || 'Usuário';
+
+  const avatarEl = document.getElementById('userAvatar');
+  const avatarUrl = resolveAvatarUrl(currentUser?.avatar);
+  if (avatarEl && avatarUrl) avatarEl.src = avatarUrl;
 }
 
 function updateDashboard() {
@@ -103,6 +143,59 @@ function updateDashboard() {
         </div>
       </div>`;
   }).join('');
+
+  renderNextAppointment();
+}
+
+function getAppointmentDateTime(apt) {
+  if (!apt?.scheduledDate) return null;
+  const datePart = new Date(apt.scheduledDate);
+  if (!apt.scheduledTime) return datePart;
+  const [h, m] = String(apt.scheduledTime).split(':').map(Number);
+  if (!isNaN(h)) datePart.setHours(h, isNaN(m) ? 0 : m, 0, 0);
+  return datePart;
+}
+
+function renderNextAppointment() {
+  const card = document.getElementById('nextAppointmentCard');
+  const content = document.getElementById('nextAppointmentContent');
+  const empty = document.getElementById('nextAppointmentEmpty');
+  if (!card || !content || !empty) return;
+
+  const now = new Date();
+  const upcoming = appointments
+    .filter(a => !['cancelled', 'rejected', 'completed'].includes(a.status))
+    .map(a => ({ apt: a, dt: getAppointmentDateTime(a) }))
+    .filter(item => item.dt && item.dt >= now)
+    .sort((a, b) => a.dt - b.dt)[0];
+
+  if (!upcoming) {
+    content.classList.add('hidden');
+    empty.classList.remove('hidden');
+    nextAppointmentId = null;
+    return;
+  }
+
+  const { apt, dt } = upcoming;
+  nextAppointmentId = apt._id;
+  const providerName = apt.providerId?.name || 'Prestador';
+  const providerSpecialty = apt.providerId?.profile?.specialty || apt.serviceId?.category || '--';
+  const avatar = resolveAvatarUrl(apt.providerId?.avatar);
+
+  const avatarEl = document.getElementById('nextAppointmentAvatar');
+  const providerEl = document.getElementById('nextAppointmentProvider');
+  const specialtyEl = document.getElementById('nextAppointmentSpecialty');
+  const dateEl = document.getElementById('nextAppointmentDate');
+  const timeEl = document.getElementById('nextAppointmentTime');
+
+  if (avatarEl && avatar) avatarEl.src = avatar;
+  if (providerEl) providerEl.textContent = providerName;
+  if (specialtyEl) specialtyEl.textContent = providerSpecialty;
+  if (dateEl) dateEl.textContent = dt.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
+  if (timeEl) timeEl.textContent = apt.scheduledTime || dt.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+  empty.classList.add('hidden');
+  content.classList.remove('hidden');
 }
 
 function setupWebSocket() {
@@ -185,6 +278,13 @@ function showNotification(message) {
 }
 
 window.newAppointment = () => { window.location.href = '/src/pages/search.html'; };
+window.joinVirtualRoom = () => {
+  if (nextAppointmentId) {
+    window.location.href = `/src/pages/appointments.html?appointment=${nextAppointmentId}`;
+  } else {
+    window.location.href = '/src/pages/appointments.html';
+  }
+};
 
 window.cancelAppointment = async (id) => {
   if (!confirm('Tem certeza que deseja cancelar?')) return;
@@ -203,5 +303,10 @@ window.cancelAppointment = async (id) => {
 };
 
 window.startChat = (id) => { alert('Funcionalidade de chat em desenvolvimento'); };
+window.viewDocuments = () => { showNotification('Funcionalidade de documentos em desenvolvimento'); };
+window.viewExams = () => { showNotification('Funcionalidade de exames em desenvolvimento'); };
+window.viewMedications = () => { showNotification('Funcionalidade de medicamentos em desenvolvimento'); };
+window.contactSupport = () => { showNotification('Suporte em desenvolvimento'); };
+window.viewHealthDetails = () => { showNotification('Resumo de saúde em desenvolvimento'); };
 
 document.addEventListener('DOMContentLoaded', loadDashboard);

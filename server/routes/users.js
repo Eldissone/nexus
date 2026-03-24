@@ -26,6 +26,22 @@ router.get('/profile', auth, async (req, res) => {
     }
 });
 
+// Get featured providers (Public)
+router.get('/featured', async (req, res) => {
+    try {
+        const providers = await User.find({ 
+            role: 'provider',
+            isVerified: true 
+        })
+        .sort({ rating: -1 })
+        .limit(4)
+        .select('-password');
+        res.json(providers);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
 // Configurar multer para upload de imagens
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -216,22 +232,6 @@ router.delete('/:id', auth, async (req, res) => {
         // como appointments, reviews, etc.
         
         res.status(204).send();
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-});
-
-// Get featured providers (Public)
-router.get('/featured', async (req, res) => {
-    try {
-        const providers = await User.find({ 
-            role: 'provider',
-            isVerified: true 
-        })
-        .sort({ rating: -1 })
-        .limit(4)
-        .select('-password');
-        res.json(providers);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

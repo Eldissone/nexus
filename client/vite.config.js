@@ -77,7 +77,14 @@ export default defineConfig({
         login: resolve(__dirname, 'src/pages/login.html'),
         register: resolve(__dirname, 'src/pages/register.html'),
         dashboard: resolve(__dirname, 'src/pages/dashboard.html'),
-        search: resolve(__dirname, 'src/pages/search.html')
+        dashboardprovider: resolve(__dirname, 'src/pages/dashboardprovider.html'),
+        search: resolve(__dirname, 'src/pages/search.html'),
+        appointments: resolve(__dirname, 'src/pages/appointments.html'),
+        details: resolve(__dirname, 'src/pages/details.html'),
+        historical: resolve(__dirname, 'src/pages/historical.html'),
+        profile: resolve(__dirname, 'src/pages/profile.html'),
+        provider: resolve(__dirname, 'src/pages/provider.html'),
+        reviews: resolve(__dirname, 'src/pages/reviews.html')
       }
     }
   }

@@ -58,6 +58,27 @@
             color: #13ec5b;
             transform: translateY(-2px);
         }
+
+        @media (max-width: 1024px) {
+            .booking-layout {
+                gap: 1.5rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .booking-main {
+                padding-bottom: 7rem;
+            }
+            .booking-title {
+                font-size: 1.5rem;
+            }
+            .booking-card {
+                padding: 1.25rem;
+            }
+            .summary-card {
+                padding: 1.25rem;
+            }
+        }
     </style>
 </head>
 <body class="bg-background-light dark:bg-background-dark text-text-dark dark:text-text-light font-display">
@@ -135,52 +156,19 @@
             }
         })();
     </script>
-    <!-- Navigation -->
-    <nav class="sticky top-0 z-50 bg-white dark:bg-surface-dark border-b border-gray-100 dark:border-white/5">
-        <div class="container mx-auto px-4 py-3">
-            <div class="flex items-center justify-between">
-                <!-- Back Button and Logo -->
-                <div class="flex items-center gap-3">
-                 
-                    <a href="index.html" class="flex items-center gap-2">
-                        <span class="text-lg font-bold text-text-dark dark:text-white">Muilo</span>
-                    </a>
-                </div>
-                
-                <!-- Navigation Links -->
-                <div class="hidden md:flex items-center gap-6">
-                    <a href="/index.html" class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">
-                        Home
-                    </a>
-                    <a href="/src/pages/home.html" class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">
-                        Buscar
-                    </a>
-                    <a href="/src/pages/dashboard.html" class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">
-                        Dashboard
-                    </a>
-                </div>
-                
-                <!-- User Menu -->
-                <div class="flex items-center gap-4">
-                    <a href="profile.html" class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">
-                        <span class="material-symbols-outlined">person</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </nav>
+  
 
     <!-- Main Content -->
-    <main class="container mx-auto px-4 py-8 max-w-4xl">
-        <h1 class="text-3xl font-bold text-text-dark dark:text-white mb-8">
+    <main class="booking-main container mx-auto px-4 py-8 max-w-4xl">
+        <h1 class="booking-title text-3xl font-bold text-text-dark dark:text-white mb-8">
             Finalizar Agendamento
         </h1>
         
-        <div class="grid lg:grid-cols-2 gap-8">
+        <div class="booking-layout grid lg:grid-cols-2 gap-8">
             <!-- Left Column: Service Details and Form -->
             <div>
                 <!-- Service Details Card -->
-                <div id="serviceDetails" class="bg-white dark:bg-surface-dark rounded-2xl p-6 mb-6 border border-gray-100 dark:border-white/5 shadow-lg">
+                <div id="serviceDetails" class="booking-card bg-white dark:bg-surface-dark rounded-2xl p-6 mb-6 border border-gray-100 dark:border-white/5 shadow-lg">
                     <div class="animate-pulse">
                         <div class="flex items-start gap-4">
                             <div class="w-16 h-16 bg-gray-200 dark:bg-white/5 rounded-xl"></div>
@@ -195,7 +183,7 @@
                 <!-- Booking Form -->
                 <form id="bookingForm" class="space-y-6">
                     <!-- Date Selection -->
-                    <div class="bg-white dark:bg-surface-dark rounded-2xl p-6 border border-gray-100 dark:border-white/5">
+                    <div class="booking-card bg-white dark:bg-surface-dark rounded-2xl p-6 border border-gray-100 dark:border-white/5">
                         <h3 class="text-lg font-bold text-text-dark dark:text-white mb-4">
                             Selecione a Data
                         </h3>
@@ -228,12 +216,12 @@
                     </div>
                     
                     <!-- Time Selection -->
-                    <div class="bg-white dark:bg-surface-dark rounded-2xl p-6 border border-gray-100 dark:border-white/5">
+                    <div class="booking-card bg-white dark:bg-surface-dark rounded-2xl p-6 border border-gray-100 dark:border-white/5">
                         <h3 class="text-lg font-bold text-text-dark dark:text-white mb-4">
                             Selecione o Horário
                         </h3>
                         
-                        <div id="timeSlots" class="grid grid-cols-3 sm:grid-cols-4 gap-3">
+                        <div id="timeSlots" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
                             <!-- Time slots will be loaded here -->
                             <div class="text-center py-4">
                                 <div class="animate-pulse">
@@ -248,7 +236,7 @@
                     </div>
                     
                     <!-- Address -->
-                    <div class="bg-white dark:bg-surface-dark rounded-2xl p-6 border border-gray-100 dark:border-white/5">
+                    <div class="booking-card bg-white dark:bg-surface-dark rounded-2xl p-6 border border-gray-100 dark:border-white/5">
                         <h3 class="text-lg font-bold text-text-dark dark:text-white mb-4">
                             Endereço para Atendimento
                         </h3>
@@ -276,7 +264,7 @@
                     </div>
                     
                     <!-- Notes -->
-                    <div class="bg-white dark:bg-surface-dark rounded-2xl p-6 border border-gray-100 dark:border-white/5">
+                    <div class="booking-card bg-white dark:bg-surface-dark rounded-2xl p-6 border border-gray-100 dark:border-white/5">
                         <h3 class="text-lg font-bold text-text-dark dark:text-white mb-4">
                             Observações (Opcional)
                         </h3>
@@ -302,7 +290,7 @@
             <!-- Right Column: Summary and Payment -->
             <div class="lg:sticky lg:top-24 h-fit">
                 <!-- Provider Card -->
-                <div class="bg-white dark:bg-surface-dark rounded-2xl p-6 mb-6 border border-gray-100 dark:border-white/5 shadow-lg">
+                <div class="summary-card bg-white dark:bg-surface-dark rounded-2xl p-6 mb-6 border border-gray-100 dark:border-white/5 shadow-lg">
                     <div class="flex items-center gap-4 mb-4">
                         <img 
                             id="providerImage"
@@ -320,7 +308,7 @@
                             <div class="flex items-center gap-1 mt-1">
                                 <span class="material-symbols-outlined text-amber-400 text-sm fill-current">star</span>
                                 <span id="providerRating" class="text-sm font-bold">0.0</span>
-                                <span class="text-xs text-gray-500 dark:text-gray-400">(0 avaliações)</span>
+                                <span id="providerReviewsCount" class="text-xs text-gray-500 dark:text-gray-400">(0 avaliações)</span>
                             </div>
                         </div>
                     </div>
@@ -343,7 +331,7 @@
                 </div>
                 
                 <!-- Payment Summary -->
-                <div class="bg-white dark:bg-surface-dark rounded-2xl p-6 border border-gray-100 dark:border-white/5 shadow-lg sticky top-24">
+                <div class="summary-card bg-white dark:bg-surface-dark rounded-2xl p-6 border border-gray-100 dark:border-white/5 shadow-lg sticky top-24">
                     <h3 class="text-lg font-bold text-text-dark dark:text-white mb-6">
                         Resumo do Agendamento
                     </h3>

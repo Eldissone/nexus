@@ -1,6 +1,8 @@
 // profileClient.js
-const API_BASE_URL = 'http://localhost:3000/api';
-const API_ORIGIN = API_BASE_URL.replace(/\/api$/, '');
+import { API_URL } from '../utils/config.js';
+
+const API_BASE_URL = `${API_URL}/api`;
+const API_ORIGIN = API_URL;
 
 // Estado da aplicação
 let currentProfile = null;
